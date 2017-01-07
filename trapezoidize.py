@@ -7,10 +7,7 @@ from searchGraph import SearchGraph, isSink
 SHEAR = 1e-4
 
 class Trapezoidize():
-     
-    ## 
-    ## Number of points should be > 3
-    ##
+
     def __init__(self, poly_line):
         self.trapezoids = []
         self.edgeList = self.initEdges(poly_line)
@@ -20,7 +17,7 @@ class Trapezoidize():
             
         self.process()
     
-    # Build the trapezoidal map and query graph
+    # Build the trapezoidal map and search graph
     def process(self):
         for edge in self.edgeList:
             traps = self.searchGraph.followEdge(edge)  

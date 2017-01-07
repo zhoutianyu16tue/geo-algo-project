@@ -9,10 +9,10 @@ class Edge(object):
         self.mpoints = [p, q]
     
     def isAbove(self, point):
-        return orient2d(self.p, self.q, point) < 0
+        return self.crossProduct(point) < 0
         
     def isBelow(self, point):
-        return orient2d(self.p, self.q, point) > 0
+        return self.crossProduct(point) > 0
         
     def addMPoint(self, point):
         for mp in self.mpoints:
@@ -20,9 +20,9 @@ class Edge(object):
                 return
         self.mpoints.append(point)
 
-def orient2d(pa, pb, pc):
-    acx = pa.x - pc.x;
-    bcx = pb.x - pc.x;
-    acy = pa.y - pc.y;
-    bcy = pb.y - pc.y;
-    return acx * bcy - acy * bcx;
+    def crossProduct(self, point):
+        cpx = self.p.x - point.x
+        cpy = self.p.y - point.y
+        cqx = self.q.x - point.x
+        cqy = self.q.y - point.y
+        return cpx * cqy - cpy * cqx
