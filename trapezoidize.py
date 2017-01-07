@@ -4,7 +4,7 @@ from random import shuffle
 from trapezoidalMap import TrapezoidalMap
 from searchGraph import SearchGraph, isSink
 
-SHEAR = 1e-3
+SHEAR = 1e-4
 
 class Trapezoidize():
      
