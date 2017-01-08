@@ -1,9 +1,9 @@
-class Edge(object):
+class Edge():
     
     def __init__(self, p, q):
         self.p = p
         self.q = q
-        self.slope = (q.y - p.y) / (q.x - p.x) if q.x - p.x != 0 else 0
+        self.slope = (q.y - p.y) / (q.x - p.x) if q.x != p.x else 0
         self.b = p.y - (p.x * self.slope)
         self.above, self.below = None, None
         self.mpoints = [p, q]
