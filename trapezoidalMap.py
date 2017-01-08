@@ -1,14 +1,25 @@
 from point import Point
 from edge import Edge
 from trapezoid import Trapezoid
+import sys
 
 class TrapezoidalMap():
 
     def __init__(self):
         self.map = {}
-        self.margin = 50.0
         self.bcross = None
         self.tcross = None
+        # make the bounding box as the initial trapezoid
+        maxX = sys.maxsize
+        maxY = maxX
+        minX = -sys.maxsize + 1
+        minY = minX
+        top = Edge(Point(minX, maxY), Point(maxX, maxY))
+        bottom = Edge(Point(minX, minY), Point(maxX, minY))
+        left = Point(minX, maxY)
+        right = Point(maxX, maxY)
+        self.boundingBox = Trapezoid(left, right, top, bottom)
+        self.map[self.boundingBox.key] = self.boundingBox
 
     def clear(self):
         self.bcross = None
@@ -83,24 +94,3 @@ class TrapezoidalMap():
         trapezoids.append(Trapezoid(e.q, t.rightPoint, t.top, t.bottom))
         trapezoids[2].updateLeftRight(trapezoids[0], trapezoids[1], t.upperRight, t.lowerRight)
         return trapezoids
-  
-    def boundingBox(self, edges): 
-        margin = self.margin
-        max = edges[0].p + margin
-        min = edges[0].q - margin
-        for e in edges:
-            if e.p.x > max.x: max = Point(e.p.x + margin, max.y)
-            if e.p.y > max.y: max = Point(max.x, e.p.y + margin)
-            if e.q.x > max.x: max = Point(e.q.x + margin, max.y)
-            if e.q.y > max.y: max = Point(max.x, e.q.y + margin)
-            if e.p.x < min.x: min = Point(e.p.x - margin, min.y)
-            if e.p.y < min.y: min = Point(min.x, e.p.y - margin)
-            if e.q.x < min.x: min = Point(e.q.x - margin, min.y)
-            if e.q.y < min.y: min = Point(min.x, e.q.y - margin)
-        top = Edge(Point(min.x, max.y), Point(max.x, max.y))
-        bottom = Edge(Point(min.x, min.y), Point(max.x, min.y))
-        left = top.p
-        right = top.q
-        trap = Trapezoid(left, right, top, bottom)
-        self.map[trap.key] = trap
-        return trap

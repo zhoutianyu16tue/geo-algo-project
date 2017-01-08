@@ -1,25 +1,23 @@
 from point import Point
 from edge import Edge
-from random import shuffle
+from random import shuffle, seed
 from trapezoidalMap import TrapezoidalMap
 from searchGraph import SearchGraph, isSink
-
-SHEAR = 1e-4
+from trapezoid import Trapezoid
 
 class Trapezoidize():
 
-    def __init__(self, poly_line):
+    def __init__(self, points):
         self.trapezoids = []
-        self.edgeList = self.initEdges(poly_line)
+        self.edges = self.connectPoints(points)
         self.trapezoidalMap = TrapezoidalMap()
-        self.boundingBox = self.trapezoidalMap.boundingBox(self.edgeList)
-        self.searchGraph = SearchGraph(isSink(self.boundingBox))
-            
-        self.process()
+        self.searchGraph = SearchGraph(isSink(self.trapezoidalMap.boundingBox))
+ 
+        self.trapezoidize()
     
     # Build the trapezoidal map and search graph
-    def process(self):
-        for edge in self.edgeList:
+    def trapezoidize(self):
+        for edge in self.edges:
             traps = self.searchGraph.followEdge(edge)  
             for t in traps:
                 # Remove old trapezods
@@ -56,31 +54,34 @@ class Trapezoidize():
                
   
     def markOutside(self, t):
-        if t.top is self.boundingBox.top or t.bottom is self.boundingBox.bottom:
+        if t.top is self.trapezoidalMap.boundingBox.top or t.bottom is self.trapezoidalMap.boundingBox.bottom:
             t.trimNeighbors()
   
-    def initEdges(self, points):
+    def connectPoints(self, points):
         edgeList = []
-        size = len(points)
-        for i in range(size):
-            j = i + 1 if i < size-1 else 0
-            p = points[i][0], points[i][1]
-            q = points[j][0], points[j][1]
+        numberOfPoints = len(points)
+        for idx, point in enumerate(points):
+            next = idx + 1 if idx < numberOfPoints-1 else 0
+            p = points[idx][0], points[idx][1]
+            q = points[next][0], points[next][1]
+
+            if p[0] == q[0]:
+                sys.exit('Detect vertical edge!')
+
             edgeList.append((p, q))
-        return self.orderEdges(edgeList)
+
+        return self.makeRandomOrderEdges(edgeList)
   
-    def orderEdges(self, edgeList):
+    def makeRandomOrderEdges(self, edgeList):
         edges = []
         for e in edgeList:
-            p = shearTransform(e[0])
-            q = shearTransform(e[1])
-            if p.x > q.x: 
+            p = Point(e[0][0], e[0][1])
+            q = Point(e[1][0], e[1][1])
+            if p.x > q.x:
                 edges.append(Edge(q, p))
-            else: 
+            else:
                 edges.append(Edge(p, q))
-        # Randomized incremental algorithm
+        
+        seed()
         shuffle(edges)
         return edges
-
-def shearTransform(point):
-    return Point(point[0] + SHEAR * point[1], point[1])
