@@ -45,7 +45,7 @@ class Trapezoid(object):
   
     def contains(self, point):
         return (point.x > self.leftPoint.x and point.x < self.rightPoint.x and 
-                self.top.isAbove(point) and self.bottom.isBelow(point))
+                point.isBelow(self.top) and point.isAbove(self.bottom))
   
     def vertices(self):
         v1 = lineIntersection(self.top, self.leftPoint.x)

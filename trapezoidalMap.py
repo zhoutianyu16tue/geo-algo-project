@@ -16,16 +16,16 @@ class TrapezoidalMap():
         self.tcross = None
         
     def case1(self, t, e):
-        trapezoids = []
-        trapezoids.append(Trapezoid(t.leftPoint, e.p, t.top, t.bottom))
-        trapezoids.append(Trapezoid(e.p, e.q, t.top, e))
-        trapezoids.append(Trapezoid(e.p, e.q, e, t.bottom))
-        trapezoids.append(Trapezoid(e.q, t.rightPoint, t.top, t.bottom))
-        trapezoids[0].updateLeft(t.upperLeft, t.lowerLeft)
-        trapezoids[1].updateLeftRight(trapezoids[0], None, trapezoids[3], None)
-        trapezoids[2].updateLeftRight(None, trapezoids[0], None, trapezoids[3])
-        trapezoids[3].updateRight(t.upperRight, t.lowerRight)
-        return trapezoids
+        A = Trapezoid(t.leftPoint, e.p, t.top, t.bottom)
+        B = Trapezoid(e.p, e.q, t.top, e)
+        C = Trapezoid(e.p, e.q, e, t.bottom)
+        D = Trapezoid(e.q, t.rightPoint, t.top, t.bottom)
+
+        A.updateLeft(t.upperLeft, t.lowerLeft)
+        B.updateLeftRight(A, None, D, None)
+        C.updateLeftRight(None, A, None, D)
+        D.updateRight(t.upperRight, t.lowerRight)
+        return [A, B, C, D]
 
     def case2(self, t, e):
         rp = e.q if e.q.x == t.rightPoint.x else t.rightPoint

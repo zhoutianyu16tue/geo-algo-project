@@ -55,26 +55,26 @@ class YNode(Node):
 
 class SearchGraph:
     
-    def __init__(self, head):
-        self.head = head
+    def __init__(self, root):
+        self.root = root
         
     def locate(self, edge):
-        return self.head.locate(edge).trapezoid
+        return self.root.locate(edge).trapezoid
   
-    def followEdge(self, edge):
+    def followSegment(self, edge):
         trapezoids = [self.locate(edge)]
-        while(edge.q.x > trapezoids[-1].rightPoint.x):
-            if edge.isAbove(trapezoids[-1].rightPoint):
-                trapezoids.append(trapezoids[-1].upperRight)
-            else:
+        while(trapezoids[-1] != None and edge.q.x > trapezoids[-1].rightPoint.x):
+            if trapezoids[-1].rightPoint.isAbove(edge):
                 trapezoids.append(trapezoids[-1].lowerRight)
+            else:
+                trapezoids.append(trapezoids[-1].upperRight)
         return trapezoids
   
     def replace(self, sink, node):
         if sink.parentList:
             node.replace(sink)
         else:
-            self.head = node
+            self.root = node
 
     def case1(self, sink, edge, tlist):
         yNode = YNode(edge, isSink(tlist[1]), isSink(tlist[2]))
