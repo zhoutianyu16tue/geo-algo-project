@@ -26,6 +26,7 @@ class Trapezoidize():
             for trapezoid in trapezoidsIntersected:
 
                 self.trapezoidalMap.map.pop(trapezoid.key, None)
+
                 # Bisect old trapezoids and create new
                 cp = trapezoid.contains(edge.p)
                 cq = trapezoid.contains(edge.q)
@@ -93,6 +94,7 @@ class Trapezoidize():
             # q = Point(e[1][0], e[1][1])
             p = self.shearTransformation(e[0])
             q = self.shearTransformation(e[1])
+
             if p.x > q.x:
                 edges.append(Edge(q, p))
             else:
