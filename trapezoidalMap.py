@@ -10,10 +10,6 @@ class TrapezoidalMap():
         self.bcross = None
         self.tcross = None
         self.map[boundingBox.key] = boundingBox
-
-    def clear(self):
-        self.bcross = None
-        self.tcross = None
         
     def case1(self, t, e):
         A = Trapezoid(t.leftPoint, e.p, t.top, t.bottom)
@@ -53,6 +49,7 @@ class TrapezoidalMap():
         else:
             trapezoids.append(Trapezoid(lp, rp, t.top, e))
             trapezoids[0].updateLeftRight(t.upperLeft, e.above, t.upperRight, None)
+
         if self.bcross is t.bottom:
             trapezoids.append(t.lowerLeft)
             trapezoids[1].updateRight(None, t.lowerRight)
@@ -60,6 +57,7 @@ class TrapezoidalMap():
         else:
             trapezoids.append(Trapezoid(lp, rp, e, t.bottom))
             trapezoids[1].updateLeftRight(e.below, t.lowerLeft, None, t.lowerRight)
+
         self.bcross = t.bottom
         self.tcross = t.top
         e.above = trapezoids[0]
@@ -75,12 +73,14 @@ class TrapezoidalMap():
         else:
             trapezoids.append(Trapezoid(lp, e.q, t.top, e))
             trapezoids[0].updateLeft(t.upperLeft, e.above)
+
         if self.bcross is t.bottom:
             trapezoids.append(t.lowerLeft)
             trapezoids[1].rightPoint = e.q
         else:
             trapezoids.append(Trapezoid(lp, e.q, e, t.bottom))
             trapezoids[1].updateLeft(e.below, t.lowerLeft)
+
         trapezoids.append(Trapezoid(e.q, t.rightPoint, t.top, t.bottom))
         trapezoids[2].updateLeftRight(trapezoids[0], trapezoids[1], t.upperRight, t.lowerRight)
         return trapezoids

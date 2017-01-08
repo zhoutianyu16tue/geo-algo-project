@@ -44,9 +44,9 @@ class Trapezoidize():
                 # Add new trapezoids to map
                 for t in tlist:
                     self.trapezoidalMap.map[t.key] = t
-                    
-            self.trapezoidalMap.clear()
-                    
+
+            self.trapezoidalMap.bcross = None
+            self.trapezoidalMap.tcross = None                    
         # Mark outside trapezoids w/ depth-first search
         for k, t in self.trapezoidalMap.map.items():
             self.markOutside(t)
