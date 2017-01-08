@@ -48,14 +48,14 @@ class Trapezoidize():
             self.trapezoidalMap.bcross = None
             self.trapezoidalMap.tcross = None                    
         # Mark outside trapezoids w/ depth-first search
-        for k, t in self.trapezoidalMap.map.items():
-            self.markOutside(t)
+        for trapezoid in self.trapezoidalMap.map.values():
+            self.markOutside(trapezoid)
             
         # Collect interior trapezoids
-        for k, t in self.trapezoidalMap.map.items():
-            if t.inside:
-                self.trapezoids.append(t)
-                t.addPoints()
+        for trapezoid in self.trapezoidalMap.map.values():
+            if trapezoid.inside:
+                self.trapezoids.append(trapezoid)
+                trapezoid.addPoints()
                
   
     def markOutside(self, t):
