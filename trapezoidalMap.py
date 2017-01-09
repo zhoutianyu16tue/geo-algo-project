@@ -25,62 +25,63 @@ class TrapezoidalMap():
 
     def trapezoidContainLeftEndpint(self, t, e):
         rp = e.q if e.q.x == t.rightPoint.x else t.rightPoint
-        trapezoids = []
-        trapezoids.append(Trapezoid(t.leftPoint, e.p, t.top, t.bottom))
-        trapezoids.append(Trapezoid(e.p, rp, t.top, e))
-        trapezoids.append(Trapezoid(e.p, rp, e, t.bottom))
-        trapezoids[0].updateLeft(t.upperLeft, t.lowerLeft)
-        trapezoids[1].updateLeftRight(trapezoids[0], None, t.upperRight, None)
-        trapezoids[2].updateLeftRight(None, trapezoids[0], None, t.lowerRight)
+
+        A = Trapezoid(t.leftPoint, e.p, t.top, t.bottom)
+        B = Trapezoid(e.p, rp, t.top, e)
+        C = Trapezoid(e.p, rp, e, t.bottom)
+        A.updateLeft(t.upperLeft, t.lowerLeft)
+        B.updateLeftRight(A, None, t.upperRight, None)
+        C.updateLeftRight(None, A, None, t.lowerRight)
+
         self.bcross = t.bottom
         self.tcross = t.top
-        e.above = trapezoids[1]
-        e.below = trapezoids[2]
-        return trapezoids
+        e.above = B
+        e.below = C
+        return [A, B, C]
   
     def trapezoidCrossedByEdge(self, t, e):
         lp = e.p if e.p.x == t.leftPoint.x  else t.leftPoint
         rp = e.q if e.q.x == t.rightPoint.x else t.rightPoint
-        trapezoids = []
+
         if self.tcross is t.top:
-            trapezoids.append(t.upperLeft)
-            trapezoids[0].updateRight(t.upperRight, None)
-            trapezoids[0].rightPoint = rp
+            A = t.upperLeft
+            A.updateRight(t.upperRight, None)
+            A.rightPoint = rp
         else:
-            trapezoids.append(Trapezoid(lp, rp, t.top, e))
-            trapezoids[0].updateLeftRight(t.upperLeft, e.above, t.upperRight, None)
+            A = Trapezoid(lp, rp, t.top, e)
+            A.updateLeftRight(t.upperLeft, e.above, t.upperRight, None)
 
         if self.bcross is t.bottom:
-            trapezoids.append(t.lowerLeft)
-            trapezoids[1].updateRight(None, t.lowerRight)
-            trapezoids[1].rightPoint = rp
+            B = t.lowerLeft
+            B.updateRight(None, t.lowerRight)
+            B.rightPoint = rp
         else:
-            trapezoids.append(Trapezoid(lp, rp, e, t.bottom))
-            trapezoids[1].updateLeftRight(e.below, t.lowerLeft, None, t.lowerRight)
+            B = Trapezoid(lp, rp, e, t.bottom)
+            B.updateLeftRight(e.below, t.lowerLeft, None, t.lowerRight)
 
         self.bcross = t.bottom
         self.tcross = t.top
-        e.above = trapezoids[0]
-        e.below = trapezoids[1]
-        return trapezoids
+        e.above = A
+        e.below = B
+        return [A, B]
 
     def trapezoidContainRightEndpint(self, t, e):
         lp = e.p if e.p.x == t.leftPoint.x else t.leftPoint
-        trapezoids = []
+
         if self.tcross is t.top:
-            trapezoids.append(t.upperLeft)
-            trapezoids[0].rightPoint = e.q
+            A = t.upperLeft
+            A.rightPoint = e.q
         else:
-            trapezoids.append(Trapezoid(lp, e.q, t.top, e))
-            trapezoids[0].updateLeft(t.upperLeft, e.above)
+            A = Trapezoid(lp, e.q, t.top, e)
+            A.updateLeft(t.upperLeft, e.above)
 
         if self.bcross is t.bottom:
-            trapezoids.append(t.lowerLeft)
-            trapezoids[1].rightPoint = e.q
+            B = t.lowerLeft
+            B.rightPoint = e.q
         else:
-            trapezoids.append(Trapezoid(lp, e.q, e, t.bottom))
-            trapezoids[1].updateLeft(e.below, t.lowerLeft)
+            B = Trapezoid(lp, e.q, e, t.bottom)
+            B.updateLeft(e.below, t.lowerLeft)
 
-        trapezoids.append(Trapezoid(e.q, t.rightPoint, t.top, t.bottom))
-        trapezoids[2].updateLeftRight(trapezoids[0], trapezoids[1], t.upperRight, t.lowerRight)
-        return trapezoids
+        C = Trapezoid(e.q, t.rightPoint, t.top, t.bottom)
+        C.updateLeftRight(A, B, t.upperRight, t.lowerRight)
+        return [A, B, C]
