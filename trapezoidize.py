@@ -2,7 +2,7 @@ from point import Point
 from edge import Edge
 from random import shuffle, seed
 from trapezoidalMap import TrapezoidalMap
-from searchGraph import SearchGraph, isSink
+from searchGraph import SearchGraph
 from trapezoid import Trapezoid
 import sys
 
@@ -14,7 +14,7 @@ class Trapezoidize():
         self.trapezoids = []
         self.edges, self.boundingBox = self.connectPoints(points)
         self.trapezoidalMap = TrapezoidalMap(self.boundingBox)
-        self.searchGraph = SearchGraph(isSink(self.boundingBox))
+        self.searchGraph = SearchGraph((self.boundingBox.node))
  
         self.trapezoidize()
     
@@ -32,16 +32,16 @@ class Trapezoidize():
 
                 if cp and cq:
                     tlist = self.trapezoidalMap.trapezoidContainEdge(trapezoid, edge)
-                    self.searchGraph.trapezoidContainEdge(trapezoid.sink, edge, tlist)
+                    self.searchGraph.trapezoidContainEdge(trapezoid.node, edge, tlist)
                 elif cp and not cq:
                     tlist = self.trapezoidalMap.trapezoidContainLeftEndpint(trapezoid, edge) 
-                    self.searchGraph.trapezoidContainLeftEndpint(trapezoid.sink, edge, tlist)
+                    self.searchGraph.trapezoidContainLeftEndpint(trapezoid.node, edge, tlist)
                 elif not cp and not cq:
                     tlist = self.trapezoidalMap.trapezoidCrossedByEdge(trapezoid, edge)
-                    self.searchGraph.trapezoidCrossedByEdge(trapezoid.sink, edge, tlist)
+                    self.searchGraph.trapezoidCrossedByEdge(trapezoid.node, edge, tlist)
                 else:
                     tlist = self.trapezoidalMap.trapezoidContainRightEndpint(trapezoid, edge)
-                    self.searchGraph.trapezoidContainRightEndpint(trapezoid.sink, edge, tlist)
+                    self.searchGraph.trapezoidContainRightEndpint(trapezoid.node, edge, tlist)
                 # Add new trapezoids to map
                 for t in tlist:
                     self.trapezoidalMap.map[t.key] = t

@@ -1,3 +1,5 @@
+from searchGraph import LeafNode
+
 class Trapezoid(object):
         
     def __init__(self, leftPoint, rightPoint, top, bottom):
@@ -10,7 +12,7 @@ class Trapezoid(object):
         self.lowerLeft = None
         self.lowerRight = None
         self.inside = True
-        self.sink = None
+        self.node = LeafNode(self)
         self.key = hash(self)
         
     def updateLeft(self, ul, ll):
