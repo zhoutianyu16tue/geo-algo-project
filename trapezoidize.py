@@ -31,17 +31,17 @@ class Trapezoidize():
                 cp = trapezoid.contains(edge.p)
                 cq = trapezoid.contains(edge.q)
                 if cp and cq:
-                    tlist = self.trapezoidalMap.case1(trapezoid, edge)
-                    self.searchGraph.case1(trapezoid.sink, edge, tlist)
+                    tlist = self.trapezoidalMap.trapezoidContainEdge(trapezoid, edge)
+                    self.searchGraph.trapezoidContainEdge(trapezoid.sink, edge, tlist)
                 elif cp and not cq:
-                    tlist = self.trapezoidalMap.case2(trapezoid, edge) 
-                    self.searchGraph.case2(trapezoid.sink, edge, tlist)
+                    tlist = self.trapezoidalMap.trapezoidContainLeftEndpint(trapezoid, edge) 
+                    self.searchGraph.trapezoidContainLeftEndpint(trapezoid.sink, edge, tlist)
                 elif not cp and not cq:
-                    tlist = self.trapezoidalMap.case3(trapezoid, edge)
-                    self.searchGraph.case3(trapezoid.sink, edge, tlist)
+                    tlist = self.trapezoidalMap.trapezoidCrossedByEdge(trapezoid, edge)
+                    self.searchGraph.trapezoidCrossedByEdge(trapezoid.sink, edge, tlist)
                 else:
-                    tlist = self.trapezoidalMap.case4(trapezoid, edge)
-                    self.searchGraph.case4(trapezoid.sink, edge, tlist)
+                    tlist = self.trapezoidalMap.trapezoidContainRightEndpint(trapezoid, edge)
+                    self.searchGraph.trapezoidContainRightEndpint(trapezoid.sink, edge, tlist)
                 # Add new trapezoids to map
                 for t in tlist:
                     self.trapezoidalMap.map[t.key] = t
@@ -76,6 +76,7 @@ class Trapezoidize():
 
             edgeList.append((p, q))
 
+        # use the infinite box as the bounding box
         maxX = sys.maxsize
         maxY = maxX
         minX = -sys.maxsize + 1

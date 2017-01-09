@@ -76,22 +76,22 @@ class SearchGraph:
         else:
             self.root = node
 
-    def case1(self, sink, edge, tlist):
+    def trapezoidContainEdge(self, sink, edge, tlist):
         yNode = YNode(edge, isSink(tlist[1]), isSink(tlist[2]))
         qNode = XNode(edge.q, yNode, isSink(tlist[3]))
         pNode = XNode(edge.p, isSink(tlist[0]), qNode)
         self.replace(sink, pNode)
   
-    def case2(self, sink, edge, tlist):
+    def trapezoidContainLeftEndpint(self, sink, edge, tlist):
         yNode = YNode(edge, isSink(tlist[1]), isSink(tlist[2]))
         pNode = XNode(edge.p, isSink(tlist[0]), yNode)
         self.replace(sink, pNode)
   
-    def case3(self, sink, edge, tlist):
+    def trapezoidCrossedByEdge(self, sink, edge, tlist):
         yNode = YNode(edge, isSink(tlist[0]), isSink(tlist[1]))
         self.replace(sink, yNode)
 
-    def case4(self, sink, edge, tlist):
+    def trapezoidContainRightEndpint(self, sink, edge, tlist):
         yNode = YNode(edge, isSink(tlist[0]), isSink(tlist[1]))
         qNode = XNode(edge.q, yNode, isSink(tlist[2]))
         self.replace(sink, qNode)

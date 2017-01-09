@@ -11,7 +11,7 @@ class TrapezoidalMap():
         self.tcross = None
         self.map[boundingBox.key] = boundingBox
         
-    def case1(self, t, e):
+    def trapezoidContainEdge(self, t, e):
         A = Trapezoid(t.leftPoint, e.p, t.top, t.bottom)
         B = Trapezoid(e.p, e.q, t.top, e)
         C = Trapezoid(e.p, e.q, e, t.bottom)
@@ -23,7 +23,7 @@ class TrapezoidalMap():
         D.updateRight(t.upperRight, t.lowerRight)
         return [A, B, C, D]
 
-    def case2(self, t, e):
+    def trapezoidContainLeftEndpint(self, t, e):
         rp = e.q if e.q.x == t.rightPoint.x else t.rightPoint
         trapezoids = []
         trapezoids.append(Trapezoid(t.leftPoint, e.p, t.top, t.bottom))
@@ -38,7 +38,7 @@ class TrapezoidalMap():
         e.below = trapezoids[2]
         return trapezoids
   
-    def case3(self, t, e):
+    def trapezoidCrossedByEdge(self, t, e):
         lp = e.p if e.p.x == t.leftPoint.x  else t.leftPoint
         rp = e.q if e.q.x == t.rightPoint.x else t.rightPoint
         trapezoids = []
@@ -64,7 +64,7 @@ class TrapezoidalMap():
         e.below = trapezoids[1]
         return trapezoids
 
-    def case4(self, t, e):
+    def trapezoidContainRightEndpint(self, t, e):
         lp = e.p if e.p.x == t.leftPoint.x else t.leftPoint
         trapezoids = []
         if self.tcross is t.top:
