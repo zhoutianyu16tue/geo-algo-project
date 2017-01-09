@@ -1,4 +1,4 @@
-class Node(object):
+class Node():
 
     def __init__(self, lchild, rchild):
         self.parentList = []
@@ -17,20 +17,20 @@ class Node(object):
                 parent.rchild = self 
         self.parentList += node.parentList
 
-class Sink(Node):
+class LeafNode(Node):
         
     def __init__(self, trapezoid):
-        super(Sink, self).__init__(None, None)
+        super(LeafNode, self).__init__(None, None)
         self.trapezoid = trapezoid
         trapezoid.sink = self
         
     def locate(self, edge): 
         return self
 
-class XNode(Node):
+class PointNode(Node):
 
     def __init__(self, point, lchild, rchild):
-        super(XNode, self).__init__(lchild, rchild)
+        super(PointNode, self).__init__(lchild, rchild)
         self.point = point
     
     def locate(self, edge): 
@@ -38,10 +38,10 @@ class XNode(Node):
             return self.rchild.locate(edge)
         return self.lchild.locate(edge)
 
-class YNode(Node):
+class EdgeNode(Node):
     
     def __init__(self, edge, lchild, rchild):
-        super(YNode, self).__init__(lchild, rchild)
+        super(EdgeNode, self).__init__(lchild, rchild)
         self.edge = edge
         
     def locate(self, edge):
@@ -77,26 +77,26 @@ class SearchGraph:
             self.root = node
 
     def trapezoidContainEdge(self, sink, edge, tlist):
-        yNode = YNode(edge, isSink(tlist[1]), isSink(tlist[2]))
-        qNode = XNode(edge.q, yNode, isSink(tlist[3]))
-        pNode = XNode(edge.p, isSink(tlist[0]), qNode)
+        yNode = EdgeNode(edge, isSink(tlist[1]), isSink(tlist[2]))
+        qNode = PointNode(edge.q, yNode, isSink(tlist[3]))
+        pNode = PointNode(edge.p, isSink(tlist[0]), qNode)
         self.replace(sink, pNode)
   
     def trapezoidContainLeftEndpint(self, sink, edge, tlist):
-        yNode = YNode(edge, isSink(tlist[1]), isSink(tlist[2]))
-        pNode = XNode(edge.p, isSink(tlist[0]), yNode)
+        yNode = EdgeNode(edge, isSink(tlist[1]), isSink(tlist[2]))
+        pNode = PointNode(edge.p, isSink(tlist[0]), yNode)
         self.replace(sink, pNode)
   
     def trapezoidCrossedByEdge(self, sink, edge, tlist):
-        yNode = YNode(edge, isSink(tlist[0]), isSink(tlist[1]))
+        yNode = EdgeNode(edge, isSink(tlist[0]), isSink(tlist[1]))
         self.replace(sink, yNode)
 
     def trapezoidContainRightEndpint(self, sink, edge, tlist):
-        yNode = YNode(edge, isSink(tlist[0]), isSink(tlist[1]))
-        qNode = XNode(edge.q, yNode, isSink(tlist[2]))
+        yNode = EdgeNode(edge, isSink(tlist[0]), isSink(tlist[1]))
+        qNode = PointNode(edge.q, yNode, isSink(tlist[2]))
         self.replace(sink, qNode)
 
 def isSink(trapezoid):
     if trapezoid.sink is None: 
-        return Sink(trapezoid)
+        return LeafNode(trapezoid)
     return trapezoid.sink
