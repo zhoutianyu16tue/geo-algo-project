@@ -43,10 +43,6 @@ class Trapezoid(object):
             if self.upperRight != None: self.upperRight.trimNeighbors()
             if self.lowerRight != None: self.lowerRight.trimNeighbors()
   
-    def contains(self, point):
-        return (point.x > self.leftPoint.x and point.x < self.rightPoint.x and 
-                point.isBelow(self.top) and point.isAbove(self.bottom))
-  
     def vertices(self):
         v1 = lineIntersection(self.top, self.leftPoint.x)
         v2 = lineIntersection(self.bottom, self.leftPoint.x)

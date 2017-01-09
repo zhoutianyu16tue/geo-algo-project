@@ -27,9 +27,9 @@ class Trapezoidize():
 
                 self.trapezoidalMap.map.pop(trapezoid.key, None)
 
-                # Bisect old trapezoids and create new
-                cp = trapezoid.contains(edge.p)
-                cq = trapezoid.contains(edge.q)
+                cp = edge.p.inside(trapezoid)
+                cq = edge.q.inside(trapezoid)
+
                 if cp and cq:
                     tlist = self.trapezoidalMap.trapezoidContainEdge(trapezoid, edge)
                     self.searchGraph.trapezoidContainEdge(trapezoid.sink, edge, tlist)
@@ -86,9 +86,9 @@ class Trapezoidize():
         left = Point(minX, maxY)
         right = Point(maxX, maxY)
 
-        return self.makeRandomOrderEdges(edgeList), Trapezoid(left, right, top, bottom)
+        return self.randomizeEdgeOrder(edgeList), Trapezoid(left, right, top, bottom)
   
-    def makeRandomOrderEdges(self, edgeList):
+    def randomizeEdgeOrder(self, edgeList):
         edges = []
         for e in edgeList:
             # p = Point(e[0][0], e[0][1])

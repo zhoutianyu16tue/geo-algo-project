@@ -16,3 +16,7 @@ class Point():
         cqx = self.x - edge.q.x
         cqy = self.y - edge.q.y
         return cpx * cqy - cpy * cqx
+
+    def inside(self, trapezoid):
+        return (self.x > trapezoid.leftPoint.x and self.x < trapezoid.rightPoint.x and 
+                self.isBelow(trapezoid.top) and self.isAbove(trapezoid.bottom))
