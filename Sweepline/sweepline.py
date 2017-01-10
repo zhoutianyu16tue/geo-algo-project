@@ -56,15 +56,15 @@ def add_edges(status, targetX, edge, trapezoid_decomposition):
         lower = status.floor_item(key)
     except KeyError:
         None
-    if upper != None and ((upper[1].is_left_to_right() and upper[1].insideOn == Direction.Right) or
-                              (upper[1].is_right_to_left() and upper[1].insideOn == Direction.Left)):
+    if upper != None and ((upper[1].is_left_to_right() and upper[1].WhichSide == Direction.Right) or
+                              (upper[1].is_right_to_left() and upper[1].WhichSide == Direction.Left)):
         i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
         j = "({}, {})".format(upper[1].point_at_edge(targetX).x, upper[1].point_at_edge(targetX).y)
         print('Added Edge :' + str(i + j))
         f.write(str(i + j) + '\n')
         trapezoid_decomposition.add_vertex_edge(Edge(edge.point_at_edge(targetX), upper[1].point_at_edge(targetX), Direction.Both))
-    if lower != None and ((lower[1].is_right_to_left() and lower[1].insideOn == Direction.Right) or
-                              (lower[1].is_left_to_right() and lower[1].insideOn == Direction.Left)):
+    if lower != None and ((lower[1].is_right_to_left() and lower[1].WhichSide == Direction.Right) or
+                              (lower[1].is_left_to_right() and lower[1].WhichSide == Direction.Left)):
         i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
         j = "({}, {})".format(lower[1].point_at_edge(targetX).x, lower[1].point_at_edge(targetX).y)
         print('Added Edge :' + str(i + j))

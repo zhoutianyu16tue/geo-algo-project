@@ -10,10 +10,10 @@ class Point:
 
 # Edge (p to q)
 class Edge:
-    def __init__(self, p, q, insideOn):
+    def __init__(self, p, q, WhichSide):
         self.p = p
         self.q = q
-        self.insideOn = insideOn
+        self.WhichSide = WhichSide # WhichSide shows which side of the edges(left, right , or both ) is in the polygon
 
     def __repr__(self):
         return "({}, {})".format(self.p, self.q)
