@@ -7,8 +7,7 @@ from timeit import default_timer as timer
 def show(p):
     for tuple in p.edges:
         edge = tuple[0]
-        matplotlib.pyplot.plot([edge.get_left_point().x, edge.get_right_point().x],
-                 [edge.get_left_point().y, edge.get_right_point().y], linestyle="-", linewidth = 2, color="r" if tuple[1] else "g")
+        matplotlib.pyplot.plot([edge.get_left_point().x, edge.get_right_point().x],[edge.get_left_point().y, edge.get_right_point().y], linestyle="-", linewidth = 2, color="k" if tuple[1] else "c")
 
 def read(openfile):
     loc = os.path.dirname(os.path.realpath(__file__))
