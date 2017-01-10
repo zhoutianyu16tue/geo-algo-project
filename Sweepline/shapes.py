@@ -50,18 +50,19 @@ class Edge:
         return self.p.x > self.q.x
 
 class Status:
-    def __init__(self, startAtY, dxdy):
-        self.startAtY = startAtY
+    def __init__(self, left_point_y, dxdy):
+        self.left_point_y = left_point_y
         self.dxdy = dxdy
 
     def __lt__(self, other):
-        if self.startAtY == other.startAtY:
+        if self.left_point_y == other.left_point_y:
             return self.dxdy < other.dxdy
         else:
-            return self.startAtY < other.startAtY
+            return self.left_point_y < other.left_point_y
 
     def __eq__(self, other):
-        return self.startAtY == other.startAtY and self.dxdy == other.dxdy
+        return self.left_point_y == other.left_point_y and self.dxdy == other.dxdy
+
 
 class Direction(Enum):
     Left = 1

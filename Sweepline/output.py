@@ -19,7 +19,7 @@ def read(openfile):
 #Delete blanklines of infile
 def delete_blanklines():
     infp = open('data.txt', "r")
-    outfp = open('data_1.txt', "w")
+    outfp = open('data_1', "w")
     lines = infp.readlines()
     for li in lines:
         if li.split():
@@ -57,6 +57,9 @@ def Dict(text, dist):
         print("Need points!")
         dist.clear()
 
+# Empty output file
+f = open('output', 'w')
+f.truncate()
 #Begin to record the running time
 timing=0.0
 start_time = timer()
@@ -64,7 +67,7 @@ delete_blanklines()
 # According to the value of data to adjust the final result visualization here
 adjust =1
 # Construct edges list
-edges = edge_list(read('data_1.txt'))
+edges = edge_list(read('data_1'))
 # Calculate limits
 # put coordinates of any point here
 # Initinalize
