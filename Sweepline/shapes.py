@@ -49,9 +49,6 @@ class Edge:
     def is_right_to_left(self):
         return self.p.x > self.q.x
 
-
-
-# Used for the sweep line
 class Status:
     def __init__(self, startAtY, dxdy):
         self.startAtY = startAtY
@@ -65,7 +62,6 @@ class Status:
 
     def __eq__(self, other):
         return self.startAtY == other.startAtY and self.dxdy == other.dxdy
-
 
 class Direction(Enum):
     Left = 1
