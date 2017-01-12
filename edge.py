@@ -21,12 +21,6 @@ class Edge():
         
     def isBelow(self, point):
         return self.crossProduct(point) > 0
-        
-    def addMPoint(self, point):
-        for mp in self.mpoints:
-            if mp.x == point.x and mp.y == point.y:
-                return
-        self.mpoints.append(point)
 
     def crossProduct(self, point):
         cpx = self.p.x - point.x

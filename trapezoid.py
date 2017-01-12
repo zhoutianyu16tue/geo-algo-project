@@ -51,16 +51,6 @@ class Trapezoid(object):
         v3 = lineIntersection(self.bottom, self.rightPoint.x)
         v4 = lineIntersection(self.top, self.rightPoint.x)
         return v1, v2, v3, v4
-  
-    def addPoints(self):
-        if self.leftPoint is not self.bottom.p: 
-            self.bottom.addMPoint(self.leftPoint)
-        if self.rightPoint is not self.bottom.q: 
-            self.bottom.addMPoint(self.rightPoint)
-        if self.leftPoint is not self.top.p: 
-            self.top.addMPoint(self.leftPoint)
-        if self.rightPoint is not self.top.q: 
-            self.top.addMPoint(self.rightPoint)
 
 def lineIntersection(edge, x):
     y =  edge.slope * x + edge.b
