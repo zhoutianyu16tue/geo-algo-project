@@ -7,8 +7,8 @@ class TrapezoidalMap():
 
     def __init__(self, boundingBox):
         self.map = {}
-        self.bcross = None
-        self.tcross = None
+        self.bottom = None
+        self.top = None
         self.map[boundingBox.hashCode] = boundingBox
         
     def trapezoidContainEdge(self, trapezoid, edge):
@@ -33,8 +33,8 @@ class TrapezoidalMap():
         B.updateLeftRight(A, None, trapezoid.upperRight, None)
         C.updateLeftRight(None, A, None, trapezoid.lowerRight)
 
-        self.bcross = trapezoid.bottom
-        self.tcross = trapezoid.top
+        self.bottom = trapezoid.bottom
+        self.top = trapezoid.top
         edge.above = B
         edge.below = C
         return [A, B, C]
@@ -43,7 +43,7 @@ class TrapezoidalMap():
         lp = edge.p if edge.p.x == trapezoid.leftPoint.x  else trapezoid.leftPoint
         rp = edge.q if edge.q.x == trapezoid.rightPoint.x else trapezoid.rightPoint
 
-        if self.tcross is trapezoid.top:
+        if self.top is trapezoid.top:
             A = trapezoid.upperLeft
             A.updateRight(trapezoid.upperRight, None)
             A.rightPoint = rp
@@ -51,7 +51,7 @@ class TrapezoidalMap():
             A = Trapezoid(lp, rp, trapezoid.top, edge)
             A.updateLeftRight(trapezoid.upperLeft, edge.above, trapezoid.upperRight, None)
 
-        if self.bcross is trapezoid.bottom:
+        if self.bottom is trapezoid.bottom:
             B = trapezoid.lowerLeft
             B.updateRight(None, trapezoid.lowerRight)
             B.rightPoint = rp
@@ -59,8 +59,8 @@ class TrapezoidalMap():
             B = Trapezoid(lp, rp, edge, trapezoid.bottom)
             B.updateLeftRight(edge.below, trapezoid.lowerLeft, None, trapezoid.lowerRight)
 
-        self.bcross = trapezoid.bottom
-        self.tcross = trapezoid.top
+        self.bottom = trapezoid.bottom
+        self.top = trapezoid.top
         edge.above = A
         edge.below = B
         return [A, B]
@@ -68,14 +68,14 @@ class TrapezoidalMap():
     def trapezoidContainRightEndpint(self, trapezoid, edge):
         lp = edge.p if edge.p.x == trapezoid.leftPoint.x else trapezoid.leftPoint
 
-        if self.tcross is trapezoid.top:
+        if self.top is trapezoid.top:
             A = trapezoid.upperLeft
             A.rightPoint = edge.q
         else:
             A = Trapezoid(lp, edge.q, trapezoid.top, edge)
             A.updateLeft(trapezoid.upperLeft, edge.above)
 
-        if self.bcross is trapezoid.bottom:
+        if self.bottom is trapezoid.bottom:
             B = trapezoid.lowerLeft
             B.rightPoint = edge.q
         else:

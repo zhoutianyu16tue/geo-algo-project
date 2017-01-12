@@ -41,9 +41,10 @@ class Trapezoidize():
                 for t in newTrapezoids:
                     self.trapezoidalMap.map[t.hashCode] = t
 
-            self.trapezoidalMap.bcross = None
-            self.trapezoidalMap.tcross = None                    
+            self.trapezoidalMap.bottom = None
+            self.trapezoidalMap.top = None                    
 
+        # the bounding box has the size of infinity, which cannot be drawn
         for trapezoid in self.trapezoidalMap.map.values():
             if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
                 self.trapezoids.append(trapezoid)
