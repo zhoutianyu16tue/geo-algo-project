@@ -25,7 +25,7 @@ class Trapezoidize():
 
             for trapezoid in trapezoidsIntersected:
 
-                self.trapezoidalMap.map.pop(trapezoid.key, None)
+                self.trapezoidalMap.map.pop(trapezoid.hashCode, None)
 
                 cp = edge.p.inside(trapezoid)
                 cq = edge.q.inside(trapezoid)
@@ -44,7 +44,7 @@ class Trapezoidize():
                     self.searchGraph.trapezoidContainRightEndpint(trapezoid.node, edge, tlist)
                 # Add new trapezoids to map
                 for t in tlist:
-                    self.trapezoidalMap.map[t.key] = t
+                    self.trapezoidalMap.map[t.hashCode] = t
 
             self.trapezoidalMap.bcross = None
             self.trapezoidalMap.tcross = None                    

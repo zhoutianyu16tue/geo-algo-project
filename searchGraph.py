@@ -69,28 +69,28 @@ class SearchGraph:
                 trapezoids.append(trapezoids[-1].upperRight)
         return trapezoids
   
-    def replace(self, sink, node):
-        if sink.parentList:
-            node.replace(sink)
+    def replace(self, leaf, node):
+        if leaf.parentList:
+            node.replace(leaf)
         else:
             self.root = node
 
-    def trapezoidContainEdge(self, sink, edge, tlist):
-        yNode = EdgeNode(edge, tlist[1].node, tlist[2].node)
-        qNode = PointNode(edge.q, yNode, tlist[3].node)
-        pNode = PointNode(edge.p, tlist[0].node, qNode)
-        self.replace(sink, pNode)
+    def trapezoidContainEdge(self, leaf, edge, newTrapezoids):
+        yNode = EdgeNode(edge, newTrapezoids[1].node, newTrapezoids[2].node)
+        qNode = PointNode(edge.q, yNode, newTrapezoids[3].node)
+        pNode = PointNode(edge.p, newTrapezoids[0].node, qNode)
+        self.replace(leaf, pNode)
   
-    def trapezoidContainLeftEndpint(self, sink, edge, tlist):
-        yNode = EdgeNode(edge, tlist[1].node, tlist[2].node)
-        pNode = PointNode(edge.p, tlist[0].node, yNode)
-        self.replace(sink, pNode)
+    def trapezoidContainLeftEndpint(self, leaf, edge, newTrapezoids):
+        yNode = EdgeNode(edge, newTrapezoids[1].node, newTrapezoids[2].node)
+        pNode = PointNode(edge.p, newTrapezoids[0].node, yNode)
+        self.replace(leaf, pNode)
   
-    def trapezoidCrossedByEdge(self, sink, edge, tlist):
-        yNode = EdgeNode(edge, tlist[0].node, tlist[1].node)
-        self.replace(sink, yNode)
+    def trapezoidCrossedByEdge(self, leaf, edge, newTrapezoids):
+        yNode = EdgeNode(edge, newTrapezoids[0].node, newTrapezoids[1].node)
+        self.replace(leaf, yNode)
 
-    def trapezoidContainRightEndpint(self, sink, edge, tlist):
-        yNode = EdgeNode(edge, tlist[0].node, tlist[1].node)
-        qNode = PointNode(edge.q, yNode, tlist[2].node)
-        self.replace(sink, qNode)
+    def trapezoidContainRightEndpint(self, leaf, edge, newTrapezoids):
+        yNode = EdgeNode(edge, newTrapezoids[0].node, newTrapezoids[1].node)
+        qNode = PointNode(edge.q, yNode, newTrapezoids[2].node)
+        self.replace(leaf, qNode)
