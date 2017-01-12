@@ -24,11 +24,7 @@ def makeRandomOrderEdges(points):
         # Shear transformation
         p = Point(points[idx][0] + Epsilon * points[idx][1], points[idx][1])
         q = Point(points[next][0] + Epsilon * points[next][1], points[next][1])
-
-        if p.x > q.x:
-            edges.append(Edge(q, p))
-        else:
-            edges.append(Edge(p, q))
+        edges.append(Edge(p, q))
     
     seed()
     shuffle(edges)

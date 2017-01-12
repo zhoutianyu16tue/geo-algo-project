@@ -7,9 +7,9 @@ class TrapezoidalMap():
 
     def __init__(self, boundingBox):
         self.map = {}
+        self.map[boundingBox.hashCode] = boundingBox
         self.bottom = None
         self.top = None
-        self.map[boundingBox.hashCode] = boundingBox
         
     def trapezoidContainEdge(self, trapezoid, edge):
         A = Trapezoid(trapezoid.leftPoint, edge.p, trapezoid.top, trapezoid.bottom)
