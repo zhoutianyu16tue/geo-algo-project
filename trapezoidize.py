@@ -22,16 +22,16 @@ class Trapezoidize():
 
                 self.trapezoidalMap.map.pop(trapezoid.hashCode, None)
 
-                cp = edge.p.inside(trapezoid)
-                cq = edge.q.inside(trapezoid)
+                pInside = edge.p.inside(trapezoid)
+                qInside = edge.q.inside(trapezoid)
 
-                if cp and cq:
+                if pInside and  qInside:
                     newTrapezoids = self.trapezoidalMap.trapezoidContainEdge(trapezoid, edge)
                     self.searchGraph.trapezoidContainEdge(trapezoid.node, edge, newTrapezoids)
-                elif cp and not cq:
+                elif pInside and not    qInside:
                     newTrapezoids = self.trapezoidalMap.trapezoidContainLeftEndpint(trapezoid, edge) 
                     self.searchGraph.trapezoidContainLeftEndpint(trapezoid.node, edge, newTrapezoids)
-                elif not cp and not cq:
+                elif not pInside and not    qInside:
                     newTrapezoids = self.trapezoidalMap.trapezoidCrossedByEdge(trapezoid, edge)
                     self.searchGraph.trapezoidCrossedByEdge(trapezoid.node, edge, newTrapezoids)
                 else:
@@ -51,8 +51,6 @@ class Trapezoidize():
         for trapezoid in self.trapezoidalMap.map.values():
             if trapezoid.inside:
                 self.trapezoids.append(trapezoid)
-                trapezoid.addPoints()
-               
   
     def markOutside(self, t):
         if t.top is self.boundingBox.top or t.bottom is self.boundingBox.bottom:

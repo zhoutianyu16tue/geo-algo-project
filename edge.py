@@ -10,7 +10,8 @@ class Edge():
             self.p = p
             self.q = q
 
-        self.slope = (q.y - p.y) / (q.x - p.x) if q.x != p.x else 0
+        # q.x != p.x guaranteed by shear transformation
+        self.slope = (q.y - p.y) / (q.x - p.x)
         self.b = p.y - (p.x * self.slope)
         self.above, self.below = None, None
         self.mpoints = [p, q]
