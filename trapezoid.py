@@ -50,7 +50,7 @@ class Trapezoid(object):
         v2 = lineIntersection(self.bottom, self.leftPoint.x)
         v3 = lineIntersection(self.bottom, self.rightPoint.x)
         v4 = lineIntersection(self.top, self.rightPoint.x)
-        return v1, v2, v3, v4
+        return (v1, v2, v3, v4)
 
 def lineIntersection(edge, x):
     y =  edge.slope * x + edge.b

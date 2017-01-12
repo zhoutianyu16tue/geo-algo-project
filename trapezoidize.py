@@ -45,10 +45,8 @@ class Trapezoidize():
             self.trapezoidalMap.tcross = None                    
 
         for trapezoid in self.trapezoidalMap.map.values():
-            self.markOutside(trapezoid)
+            if trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom:
+                trapezoid.trimNeighbors()
+
             if trapezoid.inside:
                 self.trapezoids.append(trapezoid)
-  
-    def markOutside(self, t):
-        if t.top is self.boundingBox.top or t.bottom is self.boundingBox.bottom:
-            t.trimNeighbors()
