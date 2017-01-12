@@ -91,8 +91,6 @@ class Trapezoidize():
     def randomizeEdgeOrder(self, edgeList):
         edges = []
         for e in edgeList:
-            # p = Point(e[0][0], e[0][1])
-            # q = Point(e[1][0], e[1][1])
             p = self.shearTransformation(e[0])
             q = self.shearTransformation(e[1])
 
