@@ -26,15 +26,22 @@ class Trapezoidize():
                 qInside = edge.q.inside(trapezoid)
 
                 if pInside and qInside:
+                    # See picture trapezoidContainEdge.pdf
                     newTrapezoids = self.trapezoidalMap.trapezoidContainEdge(trapezoid, edge)
                     self.searchGraph.trapezoidContainEdge(trapezoid.node, edge, newTrapezoids)
+
                 elif pInside and not qInside:
+                    # See picture trapezoidContainLeftEndpint.pdf
                     newTrapezoids = self.trapezoidalMap.trapezoidContainLeftEndpint(trapezoid, edge) 
                     self.searchGraph.trapezoidContainLeftEndpint(trapezoid.node, edge, newTrapezoids)
+
                 elif not pInside and not qInside:
+                    # See picture trapezoidCrossedByEdge.pdf
                     newTrapezoids = self.trapezoidalMap.trapezoidCrossedByEdge(trapezoid, edge)
                     self.searchGraph.trapezoidCrossedByEdge(trapezoid.node, edge, newTrapezoids)
+
                 else:
+                    # See picture trapezoidContainRightEndpint.pdf
                     newTrapezoids = self.trapezoidalMap.trapezoidContainRightEndpint(trapezoid, edge)
                     self.searchGraph.trapezoidContainRightEndpint(trapezoid.node, edge, newTrapezoids)
 
