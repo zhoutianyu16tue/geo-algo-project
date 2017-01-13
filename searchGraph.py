@@ -78,25 +78,25 @@ class SearchGraph:
             self.root = newNode
 
     def trapezoidContainEdge(self, leaf, edge, newTrapezoids):
-        yNode = EdgeNode(edge, newTrapezoids[1].node, newTrapezoids[2].node)
-        qNode = PointNode(edge.q, yNode, newTrapezoids[3].node)
-        pNode = PointNode(edge.p, newTrapezoids[0].node, qNode)
+        s = EdgeNode(edge, newTrapezoids[1].node, newTrapezoids[2].node)
+        q = PointNode(edge.q, s, newTrapezoids[3].node)
+        p = PointNode(edge.p, newTrapezoids[0].node, q)
 
-        self.insert(leaf, pNode)
+        self.insert(leaf, p)
   
     def trapezoidContainLeftEndpint(self, leaf, edge, newTrapezoids):
-        yNode = EdgeNode(edge, newTrapezoids[1].node, newTrapezoids[2].node)
-        pNode = PointNode(edge.p, newTrapezoids[0].node, yNode)
+        s = EdgeNode(edge, newTrapezoids[1].node, newTrapezoids[2].node)
+        p = PointNode(edge.p, newTrapezoids[0].node, s)
 
-        self.insert(leaf, pNode)
+        self.insert(leaf, p)
   
     def trapezoidCrossedByEdge(self, leaf, edge, newTrapezoids):
-        yNode = EdgeNode(edge, newTrapezoids[0].node, newTrapezoids[1].node)
+        s = EdgeNode(edge, newTrapezoids[0].node, newTrapezoids[1].node)
 
-        self.insert(leaf, yNode)
+        self.insert(leaf, s)
 
     def trapezoidContainRightEndpint(self, leaf, edge, newTrapezoids):
-        yNode = EdgeNode(edge, newTrapezoids[0].node, newTrapezoids[1].node)
-        qNode = PointNode(edge.q, yNode, newTrapezoids[2].node)
-        
-        self.insert(leaf, qNode)
+        s = EdgeNode(edge, newTrapezoids[0].node, newTrapezoids[1].node)
+        q = PointNode(edge.q, s, newTrapezoids[2].node)
+
+        self.insert(leaf, q)
