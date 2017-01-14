@@ -16,7 +16,7 @@ def build_event_queue(edges):
     tree = avltree.AVLTree() # avltree is a subclass of BinarySearchTree
     events = []
     for edge in edges:
-        if edge.p.x < edge.q.x:
+        if edge.p.x < edge.q.x or (edge.p.x == edge.q.x and edge.p.y < edge.q.y):
             events.append(Event(edge, EventType.Insert, edge.p.x))
             events.append(Event(edge, EventType.Removal, edge.q.x))
         else:
@@ -55,19 +55,31 @@ def add_edges(status, targetX, edge, trapezoid_decomposition):
     except KeyError:
         None
     f = open('output', 'a')
-    if upper != None and ((upper[1].is_left_to_right() and upper[1].WhichSide == Direction.Right) or (upper[1].is_right_to_left() and upper[1].WhichSide == Direction.Left)):
+    if upper != None and (upper[1].is_left_to_right() and upper[1].WhichSide == Direction.Right):
         i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
         j = "({}, {})".format(upper[1].point_at_edge(targetX).x, upper[1].point_at_edge(targetX).y)
         print('Added Edge :' + str(i + j))
         f.write(str(i + j) + '\n')
         trapezoid_decomposition.add_vertex_edge(Edge(edge.point_at_edge(targetX), upper[1].point_at_edge(targetX), Direction.Both))
-    if lower != None and ((lower[1].is_right_to_left() and lower[1].WhichSide == Direction.Right) or (lower[1].is_left_to_right() and lower[1].WhichSide == Direction.Left)):
+    if upper != None and  (upper[1].is_right_to_left() and upper[1].WhichSide == Direction.Left):
+        i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
+        j = "({}, {})".format(upper[1].point_at_edge(targetX).x, upper[1].point_at_edge(targetX).y)
+        print('Added Edge :' + str(i + j))
+        f.write(str(i + j) + '\n')
+        trapezoid_decomposition.add_vertex_edge(
+            Edge(edge.point_at_edge(targetX), upper[1].point_at_edge(targetX), Direction.Both))
+    if lower != None and (lower[1].is_right_to_left() and lower[1].WhichSide == Direction.Right):
         i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
         j = "({}, {})".format(lower[1].point_at_edge(targetX).x, lower[1].point_at_edge(targetX).y)
         print('Added Edge :' + str(i + j))
         f.write(str(i + j) + '\n')
         trapezoid_decomposition.add_vertex_edge(Edge(edge.point_at_edge(targetX), lower[1].point_at_edge(targetX), Direction.Both))
-
+    if lower != None and (lower[1].is_left_to_right() and lower[1].WhichSide == Direction.Left):
+        i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
+        j = "({}, {})".format(lower[1].point_at_edge(targetX).x, lower[1].point_at_edge(targetX).y)
+        print('Added Edge :' + str(i + j))
+        f.write(str(i + j) + '\n')
+        trapezoid_decomposition.add_vertex_edge(Edge(edge.point_at_edge(targetX), lower[1].point_at_edge(targetX), Direction.Both))
     return
 
 
