@@ -12,6 +12,7 @@ class Trapezoid(object):
         self.lowerLeft = None
         self.lowerRight = None
         self.node = LeafNode(self)
+        self.inside = True
         self.hashCode = hash(self)
         
     def updateLeft(self, ul, ll):
@@ -35,6 +36,14 @@ class Trapezoid(object):
         if ur != None: ur.upperLeft = self
         self.lowerRight = lr
         if lr != None: lr.lowerLeft = self
+
+    def trimNeighbors(self):
+        if self.inside:
+            self.inside = False
+            if self.upperLeft != None: self.upperLeft.trimNeighbors()
+            if self.lowerLeft != None: self.lowerLeft.trimNeighbors()
+            if self.upperRight != None: self.upperRight.trimNeighbors()
+            if self.lowerRight != None: self.lowerRight.trimNeighbors()
   
     def vertices(self):
         v1 = lineIntersection(self.top, self.leftPoint.x)

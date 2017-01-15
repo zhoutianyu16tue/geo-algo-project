@@ -10,6 +10,7 @@ import sys
 from trapezoid import Trapezoid
 import numpy as np
 import math
+from trapezoidize import N
 
 # from polygonGenerator.generate import generatePolygon
 
@@ -62,32 +63,36 @@ listOfTestSet = list(range(100, numOfSet, 100))
 
 def main():
     
-    runningTimes = []
-    for num in listOfTestSet:
-        curNumRunningTimeList = []
-        fileName = './testData/%d.txt' % num
-        star = readData(fileName)
-        for i in range(numOfTestPerSet):
-            print('Runing %d dataSet for %d time.' % (num, i+1))
-            trapezoidize = Trapezoidize(makeRandomOrderEdges(star), makeBoundingBox())
-            curNumRunningTimeList.append(trapezoidize.runningTime)
-        # print(curNumRunningTimeList)
-        runningTimes.append(curNumRunningTimeList)
+    # runningTimes = []
+    # for num in listOfTestSet:
+    #     curNumRunningTimeList = []
+    #     fileName = './testData/%d.txt' % num
+    #     star = readData(fileName)
+    #     for i in range(numOfTestPerSet):
+    #         print('Runing %d dataSet for %d time.' % (num, i+1))
+    #         trapezoidize = Trapezoidize(makeRandomOrderEdges(star), makeBoundingBox())
+    #         curNumRunningTimeList.append(trapezoidize.runningTime)
+    #     # print(curNumRunningTimeList)
+    #     runningTimes.append(curNumRunningTimeList)
 
-    for idx, runningTime in enumerate(runningTimes):
-        runningTime.sort()
-        print((idx+1)*100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
-        showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+    # for idx, runningTime in enumerate(runningTimes):
+    #     runningTime.sort()
+    #     print((idx+1)*100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+    #     showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
 
-    plt.scatter(listOfTestSet, showRunningTime)
-    plt.show()
-    # trapezoids = trapezoidize.trapezoids
+    # plt.scatter(listOfTestSet, showRunningTime)
+    # plt.show()
 
-    # plt.figure()
-    # star = readData(sys.argv[1])
-    # trapezoidize = Trapezoidize(makeRandomOrderEdges(star), makeBoundingBox())
-
-    # print('It takes %f ms' % trapezoidize.runningTime)
+    plt.figure()
+    star = readData(sys.argv[1])
+    # plt.gca().add_patch(PolygonPatch(Polygon(star)))
+    # plt.gca().autoscale(tight=True)
+    # plt.show()
+    # star = [(434, 148), (416, 223), (476, 279), (450, 340), (404, 396), (322, 390), (277, 432), (219, 446), (183, 389), (108, 398), (75, 343), (41, 286), (38, 218), (63, 163), (121, 123), (167, 93), (220, 89), (274, 78), (325, 84), (379, 102)]
+    trapezoidize = Trapezoidize(makeRandomOrderEdges(star), makeBoundingBox())
+    print('It takes %f ms' % trapezoidize.runningTime)
+    print('trapezoidize.startingFromRoot: %d' % trapezoidize.startingFromRoot)
+    print('N(h-1) ~ N(h): %d' % N(len(star), 1))
     # for t in trapezoidize.trapezoids:
     #     vertices = t.vertices()
     # # vertices = star
