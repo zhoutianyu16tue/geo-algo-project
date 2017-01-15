@@ -5,6 +5,8 @@ from shapes import Point, Edge, Direction
 from timeit import default_timer as timer
 import matplotlib.pyplot as plt
 from random import shuffle, seed
+from datetime import datetime
+
 Epsilon = 1e-6
 def show(p):
     for tuple in p.edges:
@@ -67,7 +69,7 @@ def Dict(text, dist):
 
 numOfTestPerSet = 20
 #numOfSet = 2100
-numOfSet = 5100
+numOfSet = 2100
 showRunningTime = []
 listOfTestSet = list(range(100, numOfSet, 100))
 runningTimes = []
@@ -77,7 +79,7 @@ for num in listOfTestSet:
     f.truncate()
     curNumRunningTimeList = []
     #fileName = './PolygonData/%d.txt' % num
-    fileName = './StartData/Star%d.txt' % num
+    fileName = './PolygonData/%d.txt' % num
     infp = open(fileName, "r")
     outfp = open('data_1', "w")
     lines = infp.readlines()
@@ -87,14 +89,15 @@ for num in listOfTestSet:
     infp.close()
     outfp.close()
     for i in range(numOfTestPerSet):
+        print('Runing %d dataSet for %d time.' % (num, i+1))
         edges = edge_list(read('data_1'))
         timing = 0.0
-        start_time = timer()
-        delete_blanklines(fileName)
+        start_time = datetime.now()
+        # delete_blanklines(fileName)
         td = sweepline.trapezoid_decompose(edges)
-        end_time = timer()
+        end_time = datetime.now()
         timing = end_time - start_time
-        curNumRunningTimeList.append(timing)
+        curNumRunningTimeList.append((timing.total_seconds()*1000))
         #print(timing)
     runningTimes.append(curNumRunningTimeList)
 for idx, runningTime in enumerate(runningTimes):

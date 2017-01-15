@@ -59,6 +59,6 @@ class Trapezoidize():
         # the bounding box has the size of infinity,
         # which cannot be drawn and must be removed.
         # This can be commented when testing
-        # for trapezoid in self.trapezoidalMap.map.values():
-        #     if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
-        #         self.trapezoids.append(trapezoid)
+        for trapezoid in self.trapezoidalMap.map.values():
+            if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
+                self.trapezoids.append(trapezoid)
