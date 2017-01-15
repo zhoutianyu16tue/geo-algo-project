@@ -15,8 +15,8 @@ class Trapezoidize():
         
         self.startingFromRoot = 0
         before = datetime.now()
-        # self.trapezoidize()
-        self.seidel()
+        self.trapezoidize()
+        # self.seidel()
         after = datetime.now()
         time = after - before
         # print('%f ms' % (time.total_seconds() * 1000))
@@ -63,8 +63,8 @@ class Trapezoidize():
             # print('i: %d' % i)
             if len(self.edges[i].parentList) == 0:
                     # print('Starting from root')
-                    self.startingFromRoot += 1
-                    startingNode = self.searchGraph.root
+                self.startingFromRoot += 1
+                startingNode = self.searchGraph.root
             elif self.edges[i].left is True:
                 startingNode = self.edges[i].parentList[0].left
             else:
@@ -76,6 +76,7 @@ class Trapezoidize():
         # for trapezoid in self.trapezoidalMap.map.values():
         #     if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
         #         self.trapezoids.append(trapezoid)
+                
         for t in self.trapezoidalMap.map.values():
             if t.top is self.boundingBox.top or t.bottom is self.boundingBox.bottom:
                 t.trimNeighbors()

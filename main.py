@@ -57,7 +57,7 @@ def readData(fileName):
     return points
 
 numOfTestPerSet = 20
-numOfSet = 2100
+numOfSet = 5100
 showRunningTime = []
 listOfTestSet = list(range(100, numOfSet, 100))
 
@@ -66,7 +66,7 @@ def main():
     # runningTimes = []
     # for num in listOfTestSet:
     #     curNumRunningTimeList = []
-    #     fileName = './testData/%d.txt' % num
+    #     fileName = './testData/Star%d.txt' % num
     #     star = readData(fileName)
     #     for i in range(numOfTestPerSet):
     #         print('Runing %d dataSet for %d time.' % (num, i+1))
@@ -93,13 +93,13 @@ def main():
     print('It takes %f ms' % trapezoidize.runningTime)
     print('trapezoidize.startingFromRoot: %d' % trapezoidize.startingFromRoot)
     print('N(h-1) ~ N(h): %d' % N(len(star), 1))
-    # for t in trapezoidize.trapezoids:
-    #     vertices = t.vertices()
-    # # vertices = star
-    #     plt.gca().add_patch(PolygonPatch(Polygon(vertices)))
-    #     plt.gca().autoscale(tight=True)
+    for t in trapezoidize.trapezoids:
+        vertices = t.vertices()
+    # vertices = star
+        plt.gca().add_patch(PolygonPatch(Polygon(vertices)))
+        plt.gca().autoscale(tight=True)
 
-    # plt.show()
+    plt.show()
 
 if __name__ == '__main__':
     main()
