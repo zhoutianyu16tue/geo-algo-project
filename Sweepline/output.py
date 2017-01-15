@@ -3,7 +3,9 @@ import matplotlib.pyplot
 import sweepline
 from shapes import Point, Edge, Direction
 from timeit import default_timer as timer
-
+import matplotlib.pyplot as plt
+from random import shuffle, seed
+Epsilon = 1e-6
 def show(p):
     for tuple in p.edges:
         edge = tuple[0]
@@ -17,8 +19,8 @@ def read(openfile):
     return content
 
 #Delete blanklines of infile
-def delete_blanklines():
-    infp = open('data.txt', "r")
+def delete_blanklines(fileName):
+    infp = open(fileName, "r")
     outfp = open('data_1', "w")
     lines = infp.readlines()
     for li in lines:
@@ -27,9 +29,11 @@ def delete_blanklines():
     infp.close()
     outfp.close()
 
+
 def edge_list(points):
     former_point = None
     edges = []
+
     for text in points:
         Line = text.split()
         if len(Line) == 1 and points[0] == text:
@@ -37,9 +41,12 @@ def edge_list(points):
         else:
             point = Point(int(Line[0]), int(Line[1]))
             if former_point != None:
+                former_point=Point(former_point.x + Epsilon * former_point.y , former_point.y)
+                point = Point(point.x + Epsilon * point.y , point.y)
                 edges.append(Edge(former_point, point, Direction.Right))
             former_point = point
     edges.append(Edge(edges[len(edges)-1].q, edges[0].p, Direction.Right))
+
     return edges
 
 def Dict(text, dist):
@@ -57,49 +64,42 @@ def Dict(text, dist):
         print("Need points!")
         dist.clear()
 
-# Empty output file
-f = open('output', 'w')
-f.truncate()
-#Begin to record the running time
-timing=0.0
-#start_time = timer()
-delete_blanklines()
-# According to the value of data to adjust the final result visualization here
-adjust =1
-# Construct edges list
-edges = edge_list(read('data_1'))
-# Calculate limits
-# put coordinates of any point here
-# Initinalize
-line = edges[0]
-minx = line.p.x
-maxx = line.p.x
-miny = line.p.y
-maxy = line.p.y
-for line in edges:
-    minx = min(minx, line.p.x, line.q.x)
-    maxx = max(maxx, line.p.x, line.q.x)
-    miny = min(miny, line.p.y, line.q.y)
-    maxy = max(maxy, line.p.y, line.q.y)
 
-# Create bounding box
-minx = minx-adjust
-maxx = maxx+adjust
-miny = miny-adjust
-maxy = maxy+adjust
-
-# Construct trapezoidal map
-start_time = timer()
-td = sweepline.trapezoid_decompose(edges)
-# End timing
-end_time = timer()
-timing=start_time-end_time
-if timing:
-    print('Running time: {0:.4f}'.format(end_time - start_time))
-
-#Visualization of results
-matplotlib.pyplot.axes()
-matplotlib.pyplot.ylim([miny, maxy])
-matplotlib.pyplot.xlim([minx, maxx])
-show(td)
-matplotlib.pyplot.show()
+numOfTestPerSet = 20
+#numOfSet = 2100
+numOfSet = 5100
+showRunningTime = []
+listOfTestSet = list(range(100, numOfSet, 100))
+runningTimes = []
+for num in listOfTestSet:
+    # Empty output file
+    f = open('output', 'w')
+    f.truncate()
+    curNumRunningTimeList = []
+    #fileName = './PolygonData/%d.txt' % num
+    fileName = './StartData/Star%d.txt' % num
+    infp = open(fileName, "r")
+    outfp = open('data_1', "w")
+    lines = infp.readlines()
+    for li in lines:
+        if li.split():
+            outfp.writelines(li)
+    infp.close()
+    outfp.close()
+    for i in range(numOfTestPerSet):
+        edges = edge_list(read('data_1'))
+        timing = 0.0
+        start_time = timer()
+        delete_blanklines(fileName)
+        td = sweepline.trapezoid_decompose(edges)
+        end_time = timer()
+        timing = end_time - start_time
+        curNumRunningTimeList.append(timing)
+        #print(timing)
+    runningTimes.append(curNumRunningTimeList)
+for idx, runningTime in enumerate(runningTimes):
+    runningTime.sort()
+    print((idx + 1) * 100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+    showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+plt.scatter(listOfTestSet, showRunningTime)
+plt.show()
