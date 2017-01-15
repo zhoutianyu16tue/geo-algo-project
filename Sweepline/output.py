@@ -62,7 +62,7 @@ f = open('output', 'w')
 f.truncate()
 #Begin to record the running time
 timing=0.0
-start_time = timer()
+#start_time = timer()
 delete_blanklines()
 # According to the value of data to adjust the final result visualization here
 adjust =1
@@ -89,6 +89,7 @@ miny = miny-adjust
 maxy = maxy+adjust
 
 # Construct trapezoidal map
+start_time = timer()
 td = sweepline.trapezoid_decompose(edges)
 # End timing
 end_time = timer()
