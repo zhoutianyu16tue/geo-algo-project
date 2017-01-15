@@ -46,12 +46,12 @@ def add_edges(status, targetX, edge, trapezoid_decomposition):
     upper = None
     lower = None
     key = Status(edge.point_at_edge(targetX).y, 0)
-    try:
-        upper = status.ceiling_item(key)
+    try:#find two edges most close the edge(where event point locates)
+        upper = status.ceiling_item(key)#reture(k,v) k is the smallest key greater than or equal to key
     except KeyError:
         None
     try:
-        lower = status.floor_item(key)
+        lower = status.floor_item(key)#get (k, v) pair, where k is the greatest key less than or equal to key
     except KeyError:
         None
     f = open('output', 'a')
