@@ -1,6 +1,7 @@
 from trapezoidalMap import TrapezoidalMap
 from searchGraph import SearchGraph
 from trapezoid import Trapezoid
+from datetime import datetime
 
 class Trapezoidize():
 
@@ -10,9 +11,13 @@ class Trapezoidize():
         self.boundingBox = boundingBox
         self.trapezoidalMap = TrapezoidalMap(self.boundingBox)
         self.searchGraph = SearchGraph((self.boundingBox.node))
- 
+        
+        before = datetime.now()
         self.trapezoidize()
-    
+        after = datetime.now()
+        time = after - before
+        # print('%f ms' % (time.total_seconds() * 1000))
+        self.runningTime = (time.total_seconds() * 1000)
     # Build the trapezoidal map and search graph
     def trapezoidize(self):
         for edge in self.edges:
@@ -54,6 +59,6 @@ class Trapezoidize():
         # the bounding box has the size of infinity,
         # which cannot be drawn and must be removed.
         # This can be commented when testing
-        for trapezoid in self.trapezoidalMap.map.values():
-            if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
-                self.trapezoids.append(trapezoid)
+        # for trapezoid in self.trapezoidalMap.map.values():
+        #     if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
+        #         self.trapezoids.append(trapezoid)
