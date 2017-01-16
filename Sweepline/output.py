@@ -76,46 +76,45 @@ def readData(fileName):
 
     return points
 
-numOfTestPerSet = 20
+numOfTestPerSet = 10
 #numOfSet = 2100
-numOfSet = 2100
+numOfSet = 55000
 showRunningTime = []
-listOfTestSet = list(range(100, numOfSet, 100))
+listOfTestSet = list(range(10000, numOfSet, 5000))
 runningTimes = []
-# for num in listOfTestSet:
+for num in listOfTestSet:
     # Empty output file
-f = open('output', 'w')
-f.truncate()
-curNumRunningTimeList = []
-#fileName = './PolygonData/%d.txt' % num
-fileName = sys.argv[1]
-infp = open(fileName, "r")
-outfp = open('data_1', "w")
-lines = infp.readlines()
-for li in lines:
-    if li.split():
-        outfp.writelines(li)
-infp.close()
-outfp.close()
-for i in range(numOfTestPerSet):
-    print('Runing %s dataSet for %d time.' % (fileName, i+1))
-    edges = edge_list(read('data_1'))
-    timing = 0.0
-    start_time = datetime.now()
-    # delete_blanklines(fileName)
-    td = sweepline.trapezoid_decompose(edges)
-    end_time = datetime.now()
-    timing = end_time - start_time
-    runningTimes.append((timing.total_seconds()*1000))
+    f = open('output', 'w')
+    f.truncate()
+    curNumRunningTimeList = []
+    fileName = '../50000Star/Star%d.txt' % num
+    # fileName = sys.argv[1]
+    infp = open(fileName, "r")
+    outfp = open('data_1', "w")
+    lines = infp.readlines()
+    for li in lines:
+        if li.split():
+            outfp.writelines(li)
+    infp.close()
+    outfp.close()
+    for i in range(numOfTestPerSet):
+        print('Runing %s dataSet for %d time.' % (fileName, i+1))
+        edges = edge_list(read('data_1'))
+        timing = 0.0
+        start_time = datetime.now()
+        # delete_blanklines(fileName)
+        td = sweepline.trapezoid_decompose(edges)
+        end_time = datetime.now()
+        timing = end_time - start_time
+        curNumRunningTimeList.append((timing.total_seconds()*1000))
+    runningTimes.append(curNumRunningTimeList)
 
-runningTimes.sort()
-print(runningTimes)
-print('running time: %f' % (sum(runningTimes[2:-2]) / (numOfTestPerSet - 4)))
         #print(timing)
 #     runningTimes.append(curNumRunningTimeList)
-# for idx, runningTime in enumerate(runningTimes):
-#     runningTime.sort()
-#     print((idx + 1) * 100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
-#     showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
-# plt.scatter(listOfTestSet, showRunningTime)
-# plt.show()
+for idx, runningTime in enumerate(runningTimes):
+    runningTime.sort()
+    print((idx + 1) * 10000, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+    showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+
+plt.scatter(listOfTestSet, showRunningTime)
+plt.show()

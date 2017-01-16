@@ -5,21 +5,27 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 df = DataFrame()
-numOfSet = 2100
-df['x'] = range(100, numOfSet, 100)
+numOfSet = 5100
+df['x'] = list(range(100, numOfSet, 100)) + list(range(10000, 55000, 5000))
 files = ['sweep', 'seidel', 'fast']
 data = [[],[],[]]
 
-def func(x, a, c, d):
-    return a * x * np.log2(x + c) + d
+def func(x, a):
+    return a * x * np.log2(x)
 
 for idx, file in enumerate(files):
-    with open(file + '2000.txt', 'r') as fd:
+    with open(file + '5000.txt', 'r') as fd:
         lines = fd.readlines()
 
     for line in lines:
         data[idx].append(float(line))
 
+for idx, file in enumerate(files):
+    with open(file + '50000.txt', 'r') as fd:
+        lines = fd.readlines()
+
+    for line in lines:
+        data[idx].append(float(line))
 
 df['sweep'] = data[0]
 df['seidel'] = data[1]
@@ -33,7 +39,7 @@ plt.ylabel('running time(ms)')
 plt.title('Title here')
 ax.set_ylim(ymin=0)
 ax.set_xlim(xmin=0)
-ax.set_xlim(xmax=numOfSet)
+ax.set_xlim(xmax=55000)
 plt.legend(loc='upper left')
 
 parameter, covariance_matrix = curve_fit(func, df['x'], df['sweep'])
