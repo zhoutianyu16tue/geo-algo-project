@@ -15,8 +15,8 @@ class Trapezoidize():
         
         self.startingFromRoot = 0
         before = datetime.now()
-        self.trapezoidize()
-        # self.seidel()
+        # self.trapezoidize()
+        self.seidel()
         after = datetime.now()
         time = after - before
         # print('%f ms' % (time.total_seconds() * 1000))
