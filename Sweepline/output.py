@@ -6,7 +6,7 @@ from timeit import default_timer as timer
 import matplotlib.pyplot as plt
 from random import shuffle, seed
 from datetime import datetime
-
+import sys
 Epsilon = 1e-6
 def show(p):
     for tuple in p.edges:
@@ -66,6 +66,15 @@ def Dict(text, dist):
         print("Need points!")
         dist.clear()
 
+def readData(fileName):
+    points = []
+    with open(fileName, 'r') as fd:
+        lines = fd.readlines()
+        for line in lines:
+            tmp = line.split()
+            points.append((int(tmp[0]),int(tmp[1])))
+
+    return points
 
 numOfTestPerSet = 20
 #numOfSet = 2100
@@ -73,36 +82,40 @@ numOfSet = 2100
 showRunningTime = []
 listOfTestSet = list(range(100, numOfSet, 100))
 runningTimes = []
-for num in listOfTestSet:
+# for num in listOfTestSet:
     # Empty output file
-    f = open('output', 'w')
-    f.truncate()
-    curNumRunningTimeList = []
-    #fileName = './PolygonData/%d.txt' % num
-    fileName = './PolygonData/%d.txt' % num
-    infp = open(fileName, "r")
-    outfp = open('data_1', "w")
-    lines = infp.readlines()
-    for li in lines:
-        if li.split():
-            outfp.writelines(li)
-    infp.close()
-    outfp.close()
-    for i in range(numOfTestPerSet):
-        print('Runing %d dataSet for %d time.' % (num, i+1))
-        edges = edge_list(read('data_1'))
-        timing = 0.0
-        start_time = datetime.now()
-        # delete_blanklines(fileName)
-        td = sweepline.trapezoid_decompose(edges)
-        end_time = datetime.now()
-        timing = end_time - start_time
-        curNumRunningTimeList.append((timing.total_seconds()*1000))
+f = open('output', 'w')
+f.truncate()
+curNumRunningTimeList = []
+#fileName = './PolygonData/%d.txt' % num
+fileName = sys.argv[1]
+infp = open(fileName, "r")
+outfp = open('data_1', "w")
+lines = infp.readlines()
+for li in lines:
+    if li.split():
+        outfp.writelines(li)
+infp.close()
+outfp.close()
+for i in range(numOfTestPerSet):
+    print('Runing %s dataSet for %d time.' % (fileName, i+1))
+    edges = edge_list(read('data_1'))
+    timing = 0.0
+    start_time = datetime.now()
+    # delete_blanklines(fileName)
+    td = sweepline.trapezoid_decompose(edges)
+    end_time = datetime.now()
+    timing = end_time - start_time
+    runningTimes.append((timing.total_seconds()*1000))
+
+runningTimes.sort()
+print(runningTimes)
+print('running time: %f' % (sum(runningTimes[2:-2]) / (numOfTestPerSet - 4)))
         #print(timing)
-    runningTimes.append(curNumRunningTimeList)
-for idx, runningTime in enumerate(runningTimes):
-    runningTime.sort()
-    print((idx + 1) * 100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
-    showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
-plt.scatter(listOfTestSet, showRunningTime)
-plt.show()
+#     runningTimes.append(curNumRunningTimeList)
+# for idx, runningTime in enumerate(runningTimes):
+#     runningTime.sort()
+#     print((idx + 1) * 100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+#     showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+# plt.scatter(listOfTestSet, showRunningTime)
+# plt.show()

@@ -63,26 +63,41 @@ listOfTestSet = list(range(100, numOfSet, 100))
 
 def main():
     
+    # runningTimes = []
+    # for num in listOfTestSet:
+    #     curNumRunningTimeList = []
+    #     fileName = './testData/%d.txt' % num
+    #     star = readData(fileName)
+    #     for i in range(numOfTestPerSet):
+    #         print('Runing %d dataSet for %d time.' % (num, i+1))
+    #         trapezoidize = Trapezoidize(makeRandomOrderEdges(star), makeBoundingBox())
+    #         curNumRunningTimeList.append(trapezoidize.runningTime)
+    #         del trapezoidize
+    #     # print(curNumRunningTimeList)
+    #     runningTimes.append(curNumRunningTimeList)
+
+    # for idx, runningTime in enumerate(runningTimes):
+    #     runningTime.sort()
+    #     print((idx+1)*100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+    #     showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+
+    # plt.scatter(listOfTestSet, showRunningTime)
+    # plt.show()
+
     runningTimes = []
-    for num in listOfTestSet:
-        curNumRunningTimeList = []
-        fileName = './testData/%d.txt' % num
-        star = readData(fileName)
-        for i in range(numOfTestPerSet):
-            print('Runing %d dataSet for %d time.' % (num, i+1))
-            trapezoidize = Trapezoidize(makeRandomOrderEdges(star), makeBoundingBox())
-            curNumRunningTimeList.append(trapezoidize.runningTime)
-            del trapezoidize
-        # print(curNumRunningTimeList)
-        runningTimes.append(curNumRunningTimeList)
+    fileName = sys.argv[1]
+    star = readData(fileName)
+    for i in range(numOfTestPerSet):
+        print('Runing %s dataSet for %d time.' % (fileName, i+1))
+        trapezoidize = Trapezoidize(makeRandomOrderEdges(star), makeBoundingBox())
+        runningTimes.append(trapezoidize.runningTime)
+        del trapezoidize
+    # print(curNumRunningTimeList)
 
-    for idx, runningTime in enumerate(runningTimes):
-        runningTime.sort()
-        print((idx+1)*100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
-        showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+    runningTimes.sort()
+    print(runningTimes)
+    print('running time: %f' % (sum(runningTimes[2:-2]) / (numOfTestPerSet - 4)))
 
-    plt.scatter(listOfTestSet, showRunningTime)
-    plt.show()
 
     # plt.figure()
     # star = readData(sys.argv[1])
