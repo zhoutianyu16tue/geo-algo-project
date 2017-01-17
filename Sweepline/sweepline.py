@@ -8,8 +8,8 @@ class Event:
         self.index = index
 
 class EventType(IntEnum):
-    Removal = 1
-    Insert = 2
+    Insert = 1
+    Removal = 2
     Nothing = 3
 
 def build_event_queue(edges):
