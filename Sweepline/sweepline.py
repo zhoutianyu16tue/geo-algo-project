@@ -92,5 +92,4 @@ def trapezoid_decompose(edges):
                 status.remove(evt.edge.statusForEdge())
         if not draw_td_edge:
             add_edges(status, targetX, event_T[1][0].edge, trapezoid_decomposition)
-            draw_td_edge = True
     return trapezoid_decomposition
