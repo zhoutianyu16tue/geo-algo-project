@@ -1,16 +1,6 @@
 from enum import IntEnum
 from bintrees import avltree
-from shapes import Edge,Status, Direction, Decomposition
-class Event:
-    def __init__(self, edge, type, index):
-        self.edge = edge
-        self.type = type
-        self.index = index
-
-class EventType(IntEnum):
-    Insert = 1
-    Removal = 2
-    Nothing = 3
+from shapes import Edge,Status, Direction, Decomposition,Event,EventType
 
 def build_event_queue(edges):
     tree = avltree.AVLTree() # avltree is a subclass of BinarySearchTree
@@ -31,11 +21,7 @@ def build_event_queue(edges):
             evts.append(evt)
         else:
             if len(evts) > 0:
-                if type == EventType.Insert:
-                    tree.insert(index, evts)
-                else:
-                    tree.insert(index, evts)
-
+                tree.insert(index, evts)
             evts = []
             index = evt.index
             evts.append(evt)
