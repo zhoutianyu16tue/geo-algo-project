@@ -51,22 +51,6 @@ def edge_list(points):
 
     return edges
 
-def Dict(text, dist):
-    min_x = 0
-    i = 0
-    for text in text:
-        l = text.split()
-        if (len(l) == 1) and (text[0] == text):
-            min_x = int(l[0])
-        elif len(l) > 1:
-            if i < min_x:
-                dist[i] = [l[0], l[1]]
-                i += 1
-    if (i < min_x):
-        print("Need points!")
-        dist.clear()
-
-
 numOfTestPerSet = 20
 #numOfSet = 2100
 numOfSet = 2100
