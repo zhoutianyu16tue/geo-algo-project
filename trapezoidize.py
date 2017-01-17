@@ -39,15 +39,7 @@ class Trapezoidize():
 
             while i < N(n, h):
                 # print('i: %d' % i)
-                if len(self.edges[i].parentList) == 0:
-                    # print('Starting from root')
-                    self.startingFromRoot += 1
-                    startingNode = self.searchGraph.root
-                elif self.edges[i].left is True:
-                    startingNode = self.edges[i].parentList[0].left
-                else:
-                    startingNode = self.edges[i].parentList[0].right
-
+                startingNode = self.findStartingNode(self.edges[i])
                 self.handleEdge(startingNode, self.edges[i])
                 i += 1
 
@@ -58,33 +50,21 @@ class Trapezoidize():
                         edge.left = True if node.parentList[0].left is node else False
             h += 1
 
-        # print('here')
         while i < n:
             # print('i: %d' % i)
-            if len(self.edges[i].parentList) == 0:
-                    # print('Starting from root')
-                self.startingFromRoot += 1
-                startingNode = self.searchGraph.root
-            elif self.edges[i].left is True:
-                startingNode = self.edges[i].parentList[0].left
-            else:
-                startingNode = self.edges[i].parentList[0].right
+            # handling rest of the edges
+            startingNode = self.findStartingNode(self.edges[i])
                     
             self.handleEdge(startingNode, self.edges[i])
             i += 1
 
-        # for trapezoid in self.trapezoidalMap.map.values():
-        #     if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
-        #         self.trapezoids.append(trapezoid)
-                
-        # for t in self.trapezoidalMap.map.values():
-        #     if t.top is self.boundingBox.top or t.bottom is self.boundingBox.bottom:
-        #         t.trimNeighbors()
-            
-        # # Collect interior trapezoids
-        # for t in self.trapezoidalMap.map.values():
-        #     if t.inside:
-        #         self.trapezoids.append(t)
+        # the bounding box has the size of infinity,
+        # which cannot be drawn and must be removed.
+        # This can be commented when testing
+        for trapezoid in self.trapezoidalMap.map.values():
+            if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
+                self.trapezoids.append(trapezoid)
+
 
     # Build the trapezoidal map and search graph
     def trapezoidize(self):
@@ -94,9 +74,9 @@ class Trapezoidize():
         # the bounding box has the size of infinity,
         # which cannot be drawn and must be removed.
         # This can be commented when testing
-        # for trapezoid in self.trapezoidalMap.map.values():
-        #     if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
-        #         self.trapezoids.append(trapezoid)
+        for trapezoid in self.trapezoidalMap.map.values():
+            if not (trapezoid.top is self.boundingBox.top or trapezoid.bottom is self.boundingBox.bottom):
+                self.trapezoids.append(trapezoid)
 
     def handleEdge(self, startingNode, edge):
         trapezoidsIntersected = self.searchGraph.followSegment(startingNode, edge)
@@ -139,6 +119,18 @@ class Trapezoidize():
 
         self.trapezoidalMap.bottom = None
         self.trapezoidalMap.top = None
+
+    def findStartingNode(self, edge):
+        if len(edge.parentList) == 0:
+            # print('Starting from root')
+            self.startingFromRoot += 1
+            startingNode = self.searchGraph.root
+        elif edge.left is True:
+            startingNode = edge.parentList[0].left
+        else:
+            startingNode = edge.parentList[0].right
+
+        return startingNode
 
 def H(n):
     cnt = 0

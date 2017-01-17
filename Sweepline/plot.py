@@ -10,8 +10,8 @@ df['x'] = list(range(100, numOfSet, 100)) + list(range(10000, 55000, 5000))
 files = ['sweep', 'seidel', 'fast']
 data = [[],[],[]]
 
-def func(x, a):
-    return a * x * np.log2(x)
+def func(x, a, b):
+    return a * x * np.log2(x) + b
 
 for idx, file in enumerate(files):
     with open(file + '5000.txt', 'r') as fd:
@@ -36,7 +36,7 @@ df.plot(kind='scatter', x='x', y='sweep',color='Blue', ax=ax, marker=(5, 1), s=4
 df.plot(kind='scatter', x='x', y='fast',color='Green', ax=ax, marker=(5, 3), s=40, label='fast');
 plt.xlabel('number of points of the polygon')
 plt.ylabel('running time(ms)')
-plt.title('Title here')
+plt.title('Plot of Star Data Set Zoomed In')
 ax.set_ylim(ymin=0)
 ax.set_xlim(xmin=0)
 ax.set_xlim(xmax=55000)
