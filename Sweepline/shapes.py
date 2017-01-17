@@ -68,6 +68,17 @@ class Direction(Enum):
     Left = 1
     Right = 2
     Both = 3
+    
+class Event:
+    def __init__(self, edge, type, index):
+        self.edge = edge
+        self.type = type
+        self.index = index
+
+class EventType(IntEnum):
+    Insert = 1
+    Removal = 2
+    Nothing = 3
 
 class Decomposition:
     edges = []
