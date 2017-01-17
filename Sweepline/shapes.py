@@ -1,4 +1,5 @@
 from enum import Enum
+from enum import IntEnum
 
 class Point:
     def __init__(self, x, y):
