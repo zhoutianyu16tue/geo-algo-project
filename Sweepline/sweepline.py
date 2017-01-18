@@ -1,8 +1,8 @@
 from enum import IntEnum
 from bintrees import avltree
-from shapes import Edge,Status, Direction, Decomposition,Event,EventType
+from shapes import Edge,Status, Direction, Decomposition,Event,EventType,Sta
 
-def build_event_queue(edges):
+def build_event_queue(edges):#only insert left point of each edge here
     tree = avltree.AVLTree() # avltree is a subclass of BinarySearchTree
     events = []
     for edge in edges:
@@ -15,7 +15,7 @@ def build_event_queue(edges):
     events = sorted(events, key=lambda evt: (evt.index, evt.type))
     index = -1
     evts = []
-
+    #use a tree here to do operation on event queue easier(can only use list)
     for evt in events:
         if evt.index == index:
             evts.append(evt)
@@ -28,16 +28,26 @@ def build_event_queue(edges):
     tree.insert(index, evts)
     return tree
 
-def add_edges(status, targetX, edge, trapezoid_decomposition):
+def build_potential_status(edges):
+    statu = []
+    for edge in edges:
+        statu.append(Sta(edge.get_left_point().y,edge))
+    return statu
+
+def add_edges(status, targetX, E,event_edge, trapezoid_decomposition):
     upper = None
     lower = None
-    key = Status(edge.point_at_edge(targetX).y, 0)
+    for key in E:
+        edge = E[key]
+        status.insert(edge.statusForEdge(), edge)
+    key = event_edge.statusForEdge()
     try:#find two edges most close the edge(where event point locates)
-        upper = status.ceiling_item(key)#reture(k,v) k is the smallest key greater than or equal to key
+        upper = status.prev_item(key)#reture succ item to key
     except KeyError:
         None
     try:
-        lower = status.floor_item(key)#get (k, v) pair, where k is the greatest key less than or equal to key
+        lower = status.succ_item(key)#return prev item to key
+
     except KeyError:
         None
     f = open('output', 'a')
@@ -45,30 +55,28 @@ def add_edges(status, targetX, edge, trapezoid_decomposition):
         #i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
         #j = "({}, {})".format(upper[1].point_at_edge(targetX).x, upper[1].point_at_edge(targetX).y)
         #print('Added Edge :' + str(i + j))
-        #f.write(str(i + j) + '\n')
-        trapezoid_decomposition.add_vertex_edge(Edge(edge.point_at_edge(targetX), upper[1].point_at_edge(targetX), Direction.Both))
+        trapezoid_decomposition.add_vertex_edge(Edge(event_edge.point_at_edge(targetX), upper[1].point_at_edge(targetX), Direction.Both))
     if upper != None and  (upper[1].is_right_to_left() and upper[1].WhichSide == Direction.Left):
         #i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
         #j = "({}, {})".format(upper[1].point_at_edge(targetX).x, upper[1].point_at_edge(targetX).y)
         #print('Added Edge :' + str(i + j))
-        #f.write(str(i + j) + '\n')
         trapezoid_decomposition.add_vertex_edge(
-            Edge(edge.point_at_edge(targetX), upper[1].point_at_edge(targetX), Direction.Both))
+            Edge(event_edge.point_at_edge(targetX), upper[1].point_at_edge(targetX), Direction.Both))
     if lower != None and (lower[1].is_right_to_left() and lower[1].WhichSide == Direction.Right):
         #i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
         #j = "({}, {})".format(lower[1].point_at_edge(targetX).x, lower[1].point_at_edge(targetX).y)
         #print('Added Edge :' + str(i + j))
-        #f.write(str(i + j) + '\n')
-        trapezoid_decomposition.add_vertex_edge(Edge(edge.point_at_edge(targetX), lower[1].point_at_edge(targetX), Direction.Both))
+        trapezoid_decomposition.add_vertex_edge(Edge(event_edge.point_at_edge(targetX), lower[1].point_at_edge(targetX), Direction.Both))
     if lower != None and (lower[1].is_left_to_right() and lower[1].WhichSide == Direction.Left):
         #i = "({}, {}),".format(edge.point_at_edge(targetX).x, edge.point_at_edge(targetX).y)
         #j = "({}, {})".format(lower[1].point_at_edge(targetX).x, lower[1].point_at_edge(targetX).y)
         #print('Added Edge :' + str(i + j))
-        #f.write(str(i + j) + '\n')
-        trapezoid_decomposition.add_vertex_edge(Edge(edge.point_at_edge(targetX), lower[1].point_at_edge(targetX), Direction.Both))
+        trapezoid_decomposition.add_vertex_edge(Edge(event_edge.point_at_edge(targetX), lower[1].point_at_edge(targetX), Direction.Both))
     return
 
 
+def getKey(Sta):
+    return Sta.y_coordinate
 
 def trapezoid_decompose(edges):
     # Construct event queue firstly
@@ -78,18 +86,28 @@ def trapezoid_decompose(edges):
     # Handle events
     trapezoid_decomposition = Decomposition()
     while len(event_queue) > 1:
+        min_=event_queue.min_item()
+        event_edge=min_[1][0].edge
+        remove_y=min_[1][0].edge.get_left_point().y # the y-coordinate of this event point
         event_T = event_queue.pop_min()
-        draw_td_edge = False
         for evt in event_T[1]:
+            points = {};
             targetX = evt.index
-            if not draw_td_edge and (evt.type == EventType.Insert):
-                add_edges(status, targetX, evt.edge, trapezoid_decomposition)
-                draw_td_edge = True
             if evt.type == EventType.Insert:
                 status.insert(evt.edge.statusForEdge(), evt.edge)
                 trapezoid_decomposition.add_edge(evt.edge)
             if evt.type == EventType.Removal:
                 status.remove(evt.edge.statusForEdge())
-        if not draw_td_edge:
-            add_edges(status, targetX, event_T[1][0].edge, trapezoid_decomposition)
+        #find the edges intersecting with sweep edge
+        event_A=build_potential_status(edges)
+        event_A.pop(remove_y)
+        event_A=sorted(event_A, key=getKey) # sort the edges according to y-coordinate
+        for e in event_A:
+            realY = e.edge.point_at_edge(targetX).y # y-coordinate potential of intersection point
+            #check whether these edges are intersected with sweep line, add these points indeed intersect with event point
+            if (((realY>=e.edge.get_left_point().y) and (realY<=e.edge.get_right_point().y))
+                or ((realY>=e.edge.get_right_point().y)and(realY<=e.edge.get_left_point().y)))and ((targetX<=e.edge.get_right_point().x)and(targetX>=e.edge.get_left_point().x)):
+                points[realY]= e.edge
+                #points are the edges, which really have intersection points with sweep line
+        add_edges(status, targetX, points, event_edge,trapezoid_decomposition)
     return trapezoid_decomposition
