@@ -6,7 +6,7 @@ from timeit import default_timer as timer
 import matplotlib.pyplot as plt
 from random import shuffle, seed
 from datetime import datetime
-
+import sys
 Epsilon = 1e-6
 def show(p):
     for tuple in p.edges:
@@ -52,18 +52,19 @@ def edge_list(points):
     return edges
 
 numOfTestPerSet = 20
+
 #numOfSet = 2100
-numOfSet = 2100
+numOfSet = 55000
 showRunningTime = []
-listOfTestSet = list(range(100, numOfSet, 100))
+listOfTestSet = list(range(10000, numOfSet, 5000))
 runningTimes = []
 for num in listOfTestSet:
     # Empty output file
     f = open('output', 'w')
     f.truncate()
     curNumRunningTimeList = []
-    #fileName = './PolygonData/%d.txt' % num
-    fileName = './PolygonData/%d.txt' % num
+    fileName = '../50000Star/Star%d.txt' % num
+    # fileName = sys.argv[1]
     infp = open(fileName, "r")
     outfp = open('data_1', "w")
     lines = infp.readlines()
@@ -73,7 +74,7 @@ for num in listOfTestSet:
     infp.close()
     outfp.close()
     for i in range(numOfTestPerSet):
-        print('Runing %d dataSet for %d time.' % (num, i+1))
+        print('Runing %s dataSet for %d time.' % (fileName, i+1))
         edges = edge_list(read('data_1'))
         timing = 0.0
         start_time = datetime.now()
@@ -82,11 +83,14 @@ for num in listOfTestSet:
         end_time = datetime.now()
         timing = end_time - start_time
         curNumRunningTimeList.append((timing.total_seconds()*1000))
-        #print(timing)
     runningTimes.append(curNumRunningTimeList)
+
+        #print(timing)
+#     runningTimes.append(curNumRunningTimeList)
 for idx, runningTime in enumerate(runningTimes):
     runningTime.sort()
-    print((idx + 1) * 100, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+    print((idx + 1) * 10000, sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
     showRunningTime.append(sum(runningTime[2:-2]) / (numOfTestPerSet - 4))
+
 plt.scatter(listOfTestSet, showRunningTime)
 plt.show()

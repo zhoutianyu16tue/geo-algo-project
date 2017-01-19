@@ -12,6 +12,7 @@ class Trapezoid(object):
         self.lowerLeft = None
         self.lowerRight = None
         self.node = LeafNode(self)
+        self.inside = True
         self.hashCode = hash(self)
         
     def updateLeft(self, ul, ll):

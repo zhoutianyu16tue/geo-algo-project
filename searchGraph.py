@@ -57,11 +57,11 @@ class SearchGraph:
     def __init__(self, root):
         self.root = root
         
-    def find(self, edge):
-        return self.root.find(edge).trapezoid
-  
-    def followSegment(self, edge):
-        trapezoids = [self.find(edge)]
+    def find(self, startingNode, edge):
+        return startingNode.find(edge)
+
+    def followSegment(self, startingNode, edge):
+        trapezoids = [self.find(startingNode, edge).trapezoid]
         while(trapezoids[-1] != None and edge.q.x > trapezoids[-1].rightPoint.x):
             if trapezoids[-1].rightPoint.isAbove(edge):
                 trapezoids.append(trapezoids[-1].lowerRight)

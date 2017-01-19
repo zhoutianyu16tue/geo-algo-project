@@ -14,6 +14,8 @@ class Edge():
         self.slope = (q.y - p.y) / (q.x - p.x) if q.x != p.x else 0
         self.b = p.y - (p.x * self.slope)
         self.above, self.below = None, None
+        self.parentList = []
+        self.left = None
     
     def isAbove(self, point):
         return self.crossProduct(point) < 0

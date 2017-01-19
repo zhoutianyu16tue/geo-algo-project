@@ -57,20 +57,20 @@ def clip(x, min, max) :
     elif( x > max ) :  return max
     else :             return x
 
-# print('usage: python3 generate.py averageRadius irregularity spikeyness numVerts')
+print('usage: python3 generate.py averageRadius irregularity spikeyness numVerts')
 
-# verts = generatePolygon(ctrX=250, ctrY=250, aveRadius=int(sys.argv[1]), irregularity=float(sys.argv[2]), spikeyness=float(sys.argv[3]), numVerts=int(sys.argv[4]))
-# print(verts)
-for num in range(100,1500,50):
-    vertices = generatePolygon(250, 250, 200, .1, .2, num)
-    with open('../testData/Star%d.txt' % num, 'w+') as fd:
-        for vertex in vertices:
-            fd.write('%d %d\n' % (vertex[0], vertex[1]))
-        print('Write %d vertices.' % num)
-print('Done!')
+verts = generatePolygon(ctrX=250, ctrY=250, aveRadius=int(sys.argv[1]), irregularity=float(sys.argv[2]), spikeyness=float(sys.argv[3]), numVerts=int(sys.argv[4]))
+print(verts)
+# for num in range(100,1500,50):
+#     vertices = generatePolygon(250, 250, 200, .1, .2, num)
+#     with open('../testData/Star%d.txt' % num, 'w+') as fd:
+#         for vertex in vertices:
+#             fd.write('%d %d\n' % (vertex[0], vertex[1]))
+#         print('Write %d vertices.' % num)
+# print('Done!')
 # plt.figure()
 
-# plt.gca().add_patch(PolygonPatch(Polygon(verts)))
-# plt.gca().autoscale(tight=True)
-# plt.show()
+plt.gca().add_patch(PolygonPatch(Polygon(verts)))
+plt.gca().autoscale(tight=True)
+plt.show()
 
